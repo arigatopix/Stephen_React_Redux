@@ -1,7 +1,6 @@
 import React from 'react'
 
 const ApprovalCard = (props) => {
-  console.log(props)
   return (
     <div className="ui card">
       <div className="content">{props.children}</div>
@@ -16,3 +15,8 @@ const ApprovalCard = (props) => {
 };
 
 export default ApprovalCard;
+
+/**
+ * Parent คือ TAG <ApprovalCard></ApprovalCard>
+ * children ก็เลยอยู่ข้างใน
+  */

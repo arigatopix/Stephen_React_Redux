@@ -49,5 +49,16 @@ ReactDOM.render(<App />, document.querySelector('#root'));
  * <childComponents1>
  *      <childComponents2><childComponents2> // Child 1 จะแสดง child 2 ผ่าน props children
  * </childComponents1>
+ * 
+ * **
+ * Function VS Class
+ * Function :
+ *  - Simple cotent show UI
+ *  - ไม่ต้องมี Logic มากนัก
+ * Class : 
+ *  - Response หน้าจอกับ user
+ *  - Logic เยอะ
+ *  - ใช้ useState handle user input
+ *  - ใช้ lifecycle  event ในการเก็บการทำงานของ application
  * - 
  */
