@@ -1,12 +1,21 @@
-import React from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+class App extends Component {
+  render() {
+    window.navigator.geolocation.getCurrentPosition(
+      position => console.log(position),
+      err => console.log(err)
+    );
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+    return <div>Latitude : </div>;
+  }
+}
+
+ReactDOM.render(<App />, document.querySelector('#root'));
+
+/**
+ * ใช้ class ต้อง extends เพื่อยืม method ของ React.Component
+ * ต้องมี render() method ต่อท้าย ยืมมาจาก class Component
+ *
+ */
