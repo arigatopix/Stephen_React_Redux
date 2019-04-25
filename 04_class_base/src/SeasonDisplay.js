@@ -1,7 +1,8 @@
 import './SeasonDisplay.css' // webpack จัดการให้ ถึง import เข้ามาได้
 import React from 'react';
 
-const configSeason = {
+// HELPER FUNCTION
+const seasonConfig = {
   // implement แทนที่จะใช้ if/eles tenary state ก็ใช้ object แทน 
   summer : {
     text : 'Let\'s hit the beach',
@@ -13,6 +14,7 @@ const configSeason = {
   }
 };
 
+// FUNCTION COMPONENT 
 const getSeason = (lat, mouth) => {
   if (mouth > 2 && mouth < 9) {
     return lat > 0 ? 'summer' : 'winter';
@@ -21,10 +23,12 @@ const getSeason = (lat, mouth) => {
   }
 }
 
+// React component
 const SeasonDisplay = (props) => {
   const season = getSeason(props.lat, new Date().getMonth());
-  const {text, iconName} = configSeason[season];  // Destructuring
+  const {text, iconName} = seasonConfig[season];  // Destructuring
 
+  // JSX
   return (
     <div className={`season-display ${season}`}>
       <i className={`icon-left massive ${iconName} icon`} />
@@ -33,6 +37,7 @@ const SeasonDisplay = (props) => {
     </div>
   );
 };
+
 
 export default SeasonDisplay;
 
