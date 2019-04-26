@@ -6,6 +6,7 @@ class SearchBar extends React.Component {
   onFormSubmit = e => {
     e.preventDefault();
 
+    // ส่งข้อมุลจาก child ไป parent
     this.props.onSubmit(this.state.term);
   };
 

@@ -6,6 +6,8 @@ class ImageCard extends React.Component {
 
     this.state = { spans: 0 };
 
+    // * Ref system ถ้าอยากจะ reach พวก DOM (html) ให้สร้าง ref ไว้ใน constructor แล้วใช้งานใน JSX ผ่าน ref property
+    // และจำไว้ว่า JSX ไม่ใช่ DOM Element จริงๆ (เป็น method ของ react) ถ้าอยากเข้าถึง DOM ต้องใช้ ref
     this.imageRef = React.createRef();
   }
 
