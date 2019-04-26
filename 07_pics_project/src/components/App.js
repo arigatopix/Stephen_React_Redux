@@ -1,5 +1,5 @@
 import React from 'react';
-import axios from 'axios';
+import unsplash from '../api/unsplash';
 import SearchBar from './SearchBar';
 
 class App extends React.Component {
@@ -9,16 +9,10 @@ class App extends React.Component {
 
   // fetch API ด้วย async await
   onSearchSubmit = async term => {
-    const response = await axios.get(
-      'https://api.unsplash.com/search/photos/',
-      {
-        params: { query: term }, // รับค่าจาก input
-        headers: {
-          Authorization:
-            'Client-ID d2f6f5c0dec5b5d42917996d62c9b368f0bc771666660a2919542aeefc0099ac'
-        }
-      }
-    );
+    const response = await unsplash.get('/search/photos/', {
+      // unsplash.get คือ instance ของ axios.create
+      params: { query: term } // รับค่าจาก input
+    });
 
     // Show data หลังจาก fetch API
     this.setState({ images: response.data.results });
