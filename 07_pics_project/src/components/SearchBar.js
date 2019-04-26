@@ -3,11 +3,11 @@ import React from 'react';
 class SearchBar extends React.Component {
   state = { term: '' };
 
-  onFormSubmit = (e) => { 
-    e.preventDefault() 
+  onFormSubmit = e => {
+    e.preventDefault();
 
-    this.props.onSubmit(this.state.term); // this.props.onSubmit คือเรียกใช้ props จาก parent ส่งข้อมูล this.state.term ให้ App หรือพูดอีกทางคือส่งข้อมูลที่ user input ให้ App component รู้
-  }
+    this.props.onSubmit(this.state.term);
+  };
 
   render() {
     return (
@@ -18,7 +18,7 @@ class SearchBar extends React.Component {
             <input
               type="text"
               value={this.state.term}
-              onChange={e => this.setState({ term: e.target.value })} 
+              onChange={e => this.setState({ term: e.target.value })}
             />
           </div>
         </form>
@@ -30,5 +30,5 @@ class SearchBar extends React.Component {
 export default SearchBar;
 
 /**
- * 
-  */
+ *
+ */
