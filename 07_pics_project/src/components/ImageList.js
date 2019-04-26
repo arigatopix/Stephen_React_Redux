@@ -1,20 +1,19 @@
 import React from 'react';
+import ImageCard from './ImageCard';
+import './ImageList.css';
 
+// Render image list
 const ImageList = props => {
-  const images = props.images.map(({ id, urls, description }) => {
-    return <img key={id} src={urls.regular} alt={description} />;
+  const images = props.images.map(image => {
+    return <ImageCard key={image.id} image={image} />;
   });
 
-  return <div>{images}</div>;
+  return <div className="image-list">{images}</div>;
 };
 
 export default ImageList;
 
 /**
- * NOTE
- * - ต้องมี key เพราะว่าตอน render list เยอะๆ จะได้หาง่าย รู้ว่าอันไหนมี ไม่ต้อง rerender
- * - ใช้ id ของ data ได้เลย สามารถ render ได้ไวขึ้น ถูกต้องขึ้น
- * - image.id ติดมาจาก api ที่ get มา
- * - แนะนำให้ใช้ key ใน div element
- * - destructuring { id, urls, description } สมาชิกของ array แต่ละตัวมี 3 อย่างที่ return กลับมา ลดการพิมพ์ซ้ำซ้อน {image.id, image.urls, image.description}
+ * NOTE ความต้องการ
+ * - ตั้งค่าให้รูปที่เป็นแนวตั้ง วาง grid-row-end span ไป 2 ช่อง ส่วนแนวนอนเหมือนเดิม เพื่อให้ช่องว่างระหว่างรูปน้อยที่สุด และไม่ overlap กัน
  */
