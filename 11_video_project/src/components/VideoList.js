@@ -4,7 +4,9 @@ import VideoItem from './VideoItem';
 const VideoList = ({ videos, onVideoSelect }) => {
   // Map array for VideoItem จะแสดงผลตามจำนวนสมาชิก
   const renderedList = videos.map(video => {
-    return <VideoItem onVideoSelect={onVideoSelect} video={video} />;
+    return (
+      <VideoItem key={video.etag} onVideoSelect={onVideoSelect} video={video} />
+    );
   });
 
   // สั่งแสดงผลโดยมาจาก array map
@@ -21,4 +23,6 @@ export default VideoList;
  * video={video} คือส่ง object api ผ่าน props เพื่อนำไปแสดงผล
  * ---
  * onVideoSelect={onVideoSelect} คือสร้าง props ให้กับ child (VideoItem) แล้วก็ callBack กลับไปที่ Parent (ปกติจะเป็น props.onVideoSelect)
+ * ---
+ * ใส่ key แบบ unique ด้วย react แนะนำ เพราะเวลา render ใหม่จะใช้เวลาน้อยลง
  */
