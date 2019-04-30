@@ -1,11 +1,11 @@
-import React from 'react'
+import React from 'react';
 
 class SearchBar extends React.Component {
-  state = { term : '' };
+  state = { term: '' };
 
-  onInputChange = (event) => {
+  onInputChange = event => {
     // รับค่า input
-    this.setState({ term : event.target.value });
+    this.setState({ term: event.target.value });
   };
 
   onFormSubmit = event => {
@@ -13,11 +13,11 @@ class SearchBar extends React.Component {
     event.preventDefault();
 
     // clear input หลัง submit
-    this.setState({ term : '' });
+    // this.setState({ term : '' });
 
     // Make sure we call callback form parent พอ submit แล้วไปเรียก API
     this.props.onFormSubmit(this.state.term);
-  }
+  };
 
   render() {
     return (
@@ -25,7 +25,11 @@ class SearchBar extends React.Component {
         <form onSubmit={this.onFormSubmit} className="ui form">
           <div className="field">
             <label>Video Search</label>
-            <input type="text" value={ this.state.term } onChange={ this.onInputChange }/>
+            <input
+              type="text"
+              value={this.state.term}
+              onChange={this.onInputChange}
+            />
           </div>
         </form>
       </div>
@@ -39,4 +43,4 @@ export default SearchBar;
  * NOTE
  * - onChange เป็น special name จะ callback funtion
  * - onFormSubmit เป็น special เหมือนกัน อย่าลืม e.preventDefault ป้องกันการ reload
-  */
+ */
