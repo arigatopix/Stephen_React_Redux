@@ -2,6 +2,7 @@ import React from 'react';
 import SearchBar from './SearchBar';
 import VideoList from './VideoList';
 import youtube from '../apis/youtube';
+import VideoDetail from './VideoDetail';
 
 class App extends React.Component {
   state = { videos: [], selectedVideo: null };
@@ -17,13 +18,14 @@ class App extends React.Component {
 
   // CallBack Child to parent เชื่อมด้วย props แล้วรับค่า (callBack) จาก VideoItem --> VideoList --> App
   onVideoSelect = video => {
-    console.log('From the App!', video);
+    this.setState({ selectedVideo: video });
   };
 
   render() {
     return (
       <div className="ui container">
         <SearchBar onFormSubmit={this.onTermSubmit} />
+        <VideoDetail video={this.state.selectedVideo} />
         <VideoList
           onVideoSelect={this.onVideoSelect}
           videos={this.state.videos}
@@ -43,7 +45,8 @@ export default App;
  * การบ้าน ไปดู axios
  * - youtube.get('url' , option เช่น params ) ----output----> https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=5&key=AIzaSyCPPYuWyJSZT8LayqTNmM0r-WYfaaDHLTE&q=bearhug
  * - url ไม่ต้องมี /
- *
+ *---------
+ **  ระวังเรื่อง state แล้วใช้ null ตัวอย่างเช่นใน VideoDetail ที่หา video.snippet.title แล้วขึ้น err เพราะว่าแรกเริ่มหน้าเพจ state เป็น null
  */
 
 // Conect props ส่งข้อมูลจาก child มาหา parent ผ่าน props
