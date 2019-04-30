@@ -7,13 +7,21 @@ import VideoDetail from './VideoDetail';
 class App extends React.Component {
   state = { videos: [], selectedVideo: null };
 
+  componentDidMount() {
+    this.onTermSubmit('bearhug');
+  }
+
   onTermSubmit = async term => {
     const response = await youtube.get('/search', {
       params: {
         q: term
       }
     });
-    this.setState({ videos: response.data.items });
+
+    this.setState({
+      videos: response.data.items,
+      selectedVideo: response.data.items[0]
+    });
   };
 
   // CallBack Child to parent เชื่อมด้วย props แล้วรับค่า (callBack) จาก VideoItem --> VideoList --> App

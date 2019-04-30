@@ -16,7 +16,7 @@ class SearchBar extends React.Component {
     // this.setState({ term : '' });
 
     // Make sure we call callback form parent พอ submit แล้วไปเรียก API
-    this.props.onFormSubmit(this.state.term);
+    if (this.state.term !== '') this.props.onFormSubmit(this.state.term);
   };
 
   render() {
