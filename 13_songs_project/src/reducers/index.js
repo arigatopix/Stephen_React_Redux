@@ -1,5 +1,7 @@
+import { combineReducers } from 'redux';
+
 // Reducer เหมือนทำหน้าที่ของแต่ละแผนก
-const songReducer = () => {
+const songsReducer = () => {
   // Static list of song รอเรียกไปแสดง ไม่ต้องผ่านตัวแปรอะไร
 
   return [
@@ -18,3 +20,9 @@ const selectedSongReducer = (selectedSong = null, action) => {
 
   return selectedSong;
 };
+
+// Combine Reducers เชื่อม action กับ reducer ด้วย redux
+export default combineReducers({
+  songs: songsReducer,
+  selectedSong: selectedSongReducer
+});
