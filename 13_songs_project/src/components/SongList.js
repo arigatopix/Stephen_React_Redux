@@ -7,6 +7,6 @@ class SongList extends Component {
   }
 }
 
-export default connect()(SongList);
+export default connect()(SongList); // เหมือนเป็น react component
 
 // เรียกแบบ closure method()(arg)
