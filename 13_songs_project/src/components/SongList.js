@@ -2,11 +2,26 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 class SongList extends Component {
+  // render ไปหน้าจอ
+  renderList() {
+    return this.props.songs.map((song) => {
+      return (
+        <div className="item" key={song.title}>
+          <div className="right floated content">
+            <button className="ui button primary">
+              Select
+            </button>
+          </div>
+          <div className="content">{song.title}</div>
+        </div>
+      );
+    })
+  }
   render() {
     // this.props === {songs : state.songs }
-    console.log(this.props); // ได้ object และ dispatch function
-
-    return <div>SongList</div>;
+    // console.log(this.props); // ได้ object และ dispatch function
+    return <div className="ui divided list">{this.renderList()}</div>;
+    // เรียก helper method อย่าลืมใส่ this. !! 
   }
 }
 
