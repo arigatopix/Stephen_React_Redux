@@ -21,7 +21,7 @@ const selectedSongReducer = (selectedSong = null, action) => {
   return selectedSong;
 };
 
-// Combine Reducers เชื่อม action กับ reducer ด้วย redux
+// Combine Reducers เชื่อม reducers เพื่อสร้าง state (data center)
 export default combineReducers({
   songs: songsReducer,
   selectedSong: selectedSongReducer
