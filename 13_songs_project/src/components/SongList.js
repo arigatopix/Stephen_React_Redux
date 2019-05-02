@@ -11,6 +11,7 @@ class SongList extends Component {
             <button
               className="ui button primary"
               onClick={() => this.props.selectSong(song)} //* selectSong ที่เรียกมาจาก connect จะมี return action  และ dispatch พร้อมทำงาน selectSong ทำงานเมื่อ click เหมือน store.dispatch(selectSong(song))
+              // คนงงกันเยอะเรื่อง Arrow function อย่าลืมว่าเป็น class component คนละ scope ก็เลยใช้ arrow หรือจะใช้ .bind ก็ได้
             >
               Select
             </button>

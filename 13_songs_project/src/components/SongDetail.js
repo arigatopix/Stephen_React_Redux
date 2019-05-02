@@ -9,7 +9,7 @@ const SongDetail = ({ song }) => {
 
   if (!song) {
     // * ระวัง props.song.title อันแรกเป็น null จะขึ้น error
-    return <h3>Selec a song</h3>;
+    return <h3>Select a song ...</h3>;
   }
   return (
     <div>
