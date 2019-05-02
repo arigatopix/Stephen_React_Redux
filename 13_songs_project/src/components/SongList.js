@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { selectSong } from '../actions'; // ใช้กับ connect() 
 
 class SongList extends Component {
   // render ไปหน้าจอ
@@ -8,7 +9,10 @@ class SongList extends Component {
       return (
         <div className="item" key={song.title}>
           <div className="right floated content">
-            <button className="ui button primary">
+            <button 
+              className="ui button primary"
+              onClick={() => this.props.selectSong(song)} //selectSong ที่เรียกมาจาก connect จะมี return dispatch ให้อัตโนมัติ เหมือน store.dispatch(selectSong(song))
+            >
               Select
             </button>
           </div>
@@ -27,17 +31,22 @@ class SongList extends Component {
 
 const mapStateToProps = (state) => {
   // หน้าที่ของมันคือ function เชื่อม Provider เอา state จาก Store มาทั้งหมด
+  // จะอัพเดทให้ทุกครั้งเมื่อ state เปลี่ยน 
+  // ทำหน้าที่เหมือน store.getState()
 
-  // console.log(state.songs); // ได้ selectedSong, songs มาจาก combineReducers 
+  console.log(state); // ได้ selectedSong, songs มาจาก combineReducers 
 
   return { songs : state.songs }; // ส่งข้อมูล state (จาก store) ผ่าน props ให้ songList เป็น object เสมอ
 }
 
-export default connect(mapStateToProps)(SongList); 
+export default connect(mapStateToProps, { selectSong })(SongList);
+
 // connect เหมือนเป็น react component หรือ function
 // วงเล็บแรก ไปเอา state จาก Store มาแสดง
-// วงเล็บสอง เอาข้อมูล state ส่งไป SongList Component ผ่าน props
-// ** ในวงเล็บสองจะมี function dispatch ติดไปให้ มาจาก redux store เพื่อทำอะไรกับ action
+// จำไว้ว่า connect เชื่อม state (อันแรก) และ action (อันสอง) ได้ และส่งผ่าน prop เช่นกัน
+// วงเล็บสอง เอาข้อมูล state และ selectSong ส่งไป SongList Component ผ่าน props
+// selectSong เป็น action creator return dispatch function มาอัตโนมัติ 
+// * ในวงเล็บสองจะมี function dispatch ติดไปให้ มาจาก redux store เพื่อทำอะไรกับ action
 
 /** 
  * NOTE
@@ -47,4 +56,8 @@ export default connect(mapStateToProps)(SongList);
  * Redux state <---> Provider <----> Connect <----> SongList
  *                                    ^ 
  *                                    ^ <----> Action
+ * 
+ * ----
+ * ปกติเวลาจะ update ข้อมูล
+ * store.dispatch((...action....)); 
   */
