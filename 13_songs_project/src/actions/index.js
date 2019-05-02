@@ -8,3 +8,5 @@ export const selectSong = song => {
 };
 
 // export default จะ export ได้แค่ function เดียว ในไฟล์นี้
+// ! จำ ในนี้เรียก action creator และ return action เป็น JS object
+// จะสมบูรณ์และใช้งานได้เมื่อใช้ร่วมกับ dispatch
