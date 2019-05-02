@@ -26,3 +26,5 @@ export default combineReducers({
   songs: songsReducer,
   selectedSong: selectedSongReducer
 });
+
+// ซ้ายใน Store state , ขวาคือ Reducers
