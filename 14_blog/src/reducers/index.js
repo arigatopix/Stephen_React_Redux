@@ -1,9 +1,6 @@
 import { combineReducers } from 'redux';
-
+import postReducer from './postReducer'
 
 export default combineReducers({
-  replaceMe : () => 'hi there'
-  
+  post : postReducer
 });
-// * export combineReducers เพื่อเอาไปใช้งานต่อใน index.js
-// * บางทียังไม่ได้คิดว่า reducers คืออะไรให้ใช้ dummyKey : () => 'dummyValue' แทน
