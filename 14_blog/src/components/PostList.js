@@ -15,9 +15,3 @@ class PostList extends Component {
 export default connect(null,
   { fetchPosts }
   )(PostList);
-
-/**
- * NOTE :
- * - connect(null) ตอนนี้ยังไม่ต้องการ state จาก redux store
- * - connect({ fetchPosts }) จะตอบกลับมาเป็น object action พร้อมกับ dispatch เอาไปใช้ผ่าน props ใน PostList
-  */
