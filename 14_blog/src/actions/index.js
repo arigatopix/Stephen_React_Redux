@@ -1,15 +1,12 @@
 import jsonPlaceholder from '../apis/jsonPlaceholder';
 
-export const fetchPosts = () => {
-  return async function(dispatch,getState) {
-    // ใช้ redux-thunk จะ return เป็น function จนกว่า asyn await เป็น object plain ก็จะ run dispatch แบบ manaul
+export const fetchPosts = () =>  async dispatch => {
 
     const response = await jsonPlaceholder.get('/posts');
 
-    dispatch({ type: 'FETCH_POSTS', payload : response })
+    dispatch({ type: 'FETCH_POSTS', payload : response });
     // เรียก dispatch เมื่อ async ส่งข้อมูลกลับมา คำถามคือทำไมไม่มีปัญหา ??
     // ได้เพราะ เมื่อไหร่ที่เรียก action จะ return request object แทนที่จะเป็น action object (ปกติ thunk ไม่สนอยู่แล้วว่าจะเป็นอะไร) หลังจากนั้น พอได้ข้อมูลก็จะเรียก dispatch 
-  }
 };
 
 /**
