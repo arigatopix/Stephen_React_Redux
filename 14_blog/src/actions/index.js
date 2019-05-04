@@ -6,5 +6,8 @@ export const fetchPosts = () => async dispatch => {
   dispatch({ type: 'FETCH_POSTS', payload: response.data });
 };
 
-// action อย่าลืมใช้ redux-thunk เพื่อให้สามารถส่ง function object หลังจาก fetch ข้อมูลเสด thunk return action ไปให้ dispatch
-// payload : เอาเฉพาะ data ไปแสดงพอ ไม่ต้องเอา response ไปทั้ง object
+export const fetchUser = id => async dispatch => {
+  // fetchUser จะ return function ให้ thunk จากนั้นถ้าได้ action ก็จะ dispatch
+  const response = await jsonPlaceholder.get(`/users/${id}`);
+  dispatch({ type: 'FETCH_USER', payload: response.data });
+};
