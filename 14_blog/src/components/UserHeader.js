@@ -12,10 +12,9 @@ class UserHeader extends React.Component {
     this.props.fetchUser(this.props.userId);
   }
   render() {
-    const user = this.props.users.find(user => {
-      // จะแสดงเมื่อใน block เป็น true เชค user.id ที่ส่งมาจาก api เทียบกับ userId ของ posts
-      return user.id === this.props.userId;
-    });
+    // รับจาก mapStateToProps และ destructuring จะได้ไม่พิมพ์บ่อยๆ
+    const { user } = this.props;
+    console.log(user);
 
     if (!user) {
       // first load จะไม่เจอ user เพราะยัง fetch ไม่เสร็จ
@@ -26,9 +25,11 @@ class UserHeader extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  // รับจาก reducer มา
-  return { users: state.users };
+const mapStateToProps = (state, ownProps) => {
+  // * รับจาก reducer มา (state) และเอา props ที่มาจาก postList (ownProps) มา compare
+  // ข้อดีของการ compare ในนี้คือ component ไม่แสดงข้อมูล / ไม่รับข้อมูลทั้ง api และไม่ทำซ้ำๆ
+  return { user: state.users.find(user => user.id === ownProps.userId) };
+  // ได้รับ user เดี่ยวๆ ตามที่กำหนดจาก ownProps
 };
 
 export default connect(
