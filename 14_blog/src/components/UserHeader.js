@@ -14,7 +14,6 @@ class UserHeader extends React.Component {
   render() {
     // รับจาก mapStateToProps และ destructuring จะได้ไม่พิมพ์บ่อยๆ
     const { user } = this.props;
-    console.log(user);
 
     if (!user) {
       // first load จะไม่เจอ user เพราะยัง fetch ไม่เสร็จ
@@ -27,7 +26,7 @@ class UserHeader extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
   // * รับจาก reducer มา (state) และเอา props ที่มาจาก postList (ownProps) มา compare
-  // ข้อดีของการ compare ในนี้คือ component ไม่แสดงข้อมูล / ไม่รับข้อมูลทั้ง api และไม่ทำซ้ำๆ
+  // ? ข้อดีของการ compare ในนี้คือ component ไม่แสดงข้อมูล / ไม่รับข้อมูลทั้ง api และไม่ทำซ้ำๆ แต่ ยังงงๆ อยู่เพราะยัง fetch user 10 ครั้ง ต่อโพสอยู่ ????
   return { user: state.users.find(user => user.id === ownProps.userId) };
   // ได้รับ user เดี่ยวๆ ตามที่กำหนดจาก ownProps
 };
