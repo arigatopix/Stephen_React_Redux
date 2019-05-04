@@ -7,3 +7,4 @@ export const fetchPosts = () => async dispatch => {
 };
 
 // action อย่าลืมใช้ redux-thunk เพื่อให้สามารถส่ง function object หลังจาก fetch ข้อมูลเสด thunk return action ไปให้ dispatch
+// payload : เอาเฉพาะ data ไปแสดงพอ ไม่ต้องเอา response ไปทั้ง object
