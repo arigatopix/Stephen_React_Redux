@@ -8,7 +8,7 @@ class UserHeader extends React.Component {
 
   // ต้อง make sure ว่าจะมีข้อมูลมาแสดงผ่าน life cycle
   componentDidMount() {
-    // * เรียก action creators โดยผ่าน id (ดูที่ action)
+    // * เรียก action creators โดยผ่าน id (this.props.userId มาจาก PostList)(ดูที่ action)
     this.props.fetchUser(this.props.userId);
   }
   render() {
@@ -27,6 +27,7 @@ class UserHeader extends React.Component {
 const mapStateToProps = (state, ownProps) => {
   // * รับจาก reducer มา (state) และเอา props ที่มาจาก postList (ownProps) มา compare
   // ? ข้อดีของการ compare ในนี้คือ component ไม่แสดงข้อมูล / ไม่รับข้อมูลทั้ง api และไม่ทำซ้ำๆ แต่ ยังงงๆ อยู่เพราะยัง fetch user 10 ครั้ง ต่อโพสอยู่ ????
+  // * mapStateProps มี 2 parameter ตัวแรกจะเรียกเมื่อ store state change, ตัวสองจะเรียกเมื่อ props ของ component change (https://github.com/reduxjs/react-redux/blob/master/docs/api/connect.md#ownprops)
   return { user: state.users.find(user => user.id === ownProps.userId) };
   // ได้รับ user เดี่ยวๆ ตามที่กำหนดจาก ownProps
 };
