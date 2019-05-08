@@ -1,22 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { fetchUser } from '../actions';
-
 class UserHeader extends React.Component {
-  // fetch user มาแสดง โดยรับจาก action
-  // * อย่าลืมว่าจะคุยกับ action ต้องผ่าน connect component
-
-  // ต้อง make sure ว่าจะมีข้อมูลมาแสดงผ่าน life cycle
-  componentDidMount() {
-    // * เรียก action creators โดยผ่าน id (this.props.userId มาจาก PostList)(ดูที่ action)
-    this.props.fetchUser(this.props.userId);
-  }
   render() {
-    // รับจาก mapStateToProps และ destructuring จะได้ไม่พิมพ์บ่อยๆ
     const { user } = this.props;
 
     if (!user) {
-      // first load จะไม่เจอ user เพราะยัง fetch ไม่เสร็จ
       return null;
     }
 
@@ -35,7 +23,6 @@ const mapStateToProps = (state, ownProps) => {
 
 export default connect(
   mapStateToProps,
-  { fetchUser }
 )(UserHeader);
 
 /**
