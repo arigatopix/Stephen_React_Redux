@@ -10,17 +10,18 @@ import jsonPlaceholder from '../apis/jsonPlaceholder';
 export const fetchPostsAndUsers = () => async (dispatch, getState) => {
   await dispatch(fetchPosts());
 
-  // getState เรียกข้อมูลใน redux thunk
-  // console.log(getState().posts);
-
-  // ใช้ loadash ในการ map object (_.map(obj, 'key')) posts = {userId, id ... } แล้ว array ใหม่จะแสดง userId อย่างเดียว ..
+  // * ใช้ loadash ในการ map object (_.map(obj, 'key')) posts = {userId, id ... } แล้ว array ใหม่จะแสดง userId อย่างเดียว ..
   // แสดง array ใหม่เอาเฉพาะ userId ที่ไม่ซ้ำกันให้ใช้ _.uniq จะแสดง id ค่าเดียว
-  const userIds = _.uniq(_.map(getState().posts, 'userId'));
-
+  // const userIds = _.uniq(_.map(getState().posts, 'userId'));
   // เรียก fetchUser() ผ่าน arg userIds
-  console.log(userIds);
-  userIds.forEach(id => dispatch(fetchUser(id)));
-  console.log(getState());
+  // userIds.forEach(id => dispatch(fetchUser(id)));
+
+  // * Alternate way use _.chain เป็น method ของ loadash เพื่อทำ method ไปเรื่อยๆ จนกว่าจะหยุด .value(); เพื่อ execute chain
+  _.chain(getState().posts)
+    .map('userId') // map key userId
+    .uniq() // เอาเฉพาะ value ที่ unique
+    .forEach(id => dispatch(fetchUser(id)))
+    .value();
 }
 
 export const fetchPosts = () => async dispatch => {
