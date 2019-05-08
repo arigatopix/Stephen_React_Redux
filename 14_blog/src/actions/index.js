@@ -19,14 +19,14 @@ export const fetchPostsAndUsers = () => async (dispatch, getState) => {
   // * Alternate way use _.chain เป็น method ของ loadash เพื่อทำ method ไปเรื่อยๆ จนกว่าจะหยุด .value(); เพื่อ execute chain
   _.chain(getState().posts)
     .map('userId') // map key userId
-    .uniq() // เอาเฉพาะ value ที่ unique
-    .forEach(id => dispatch(fetchUser(id)))
+    .uniq() // เอาเฉพาะ value userId ที่ unique
+    .forEach(id => dispatch(fetchUser(id))) // dispatch ส่งไป redux-thunk จนกว่าจะได้ action
     .value();
 }
 
 export const fetchPosts = () => async dispatch => {
   const response = await jsonPlaceholder.get('/posts');
-  // เรียก dispatch เมื่อ data ถูก fetch
+  // เรียก dispatch เมื่อ data fetch เสร็จแล้ว
   dispatch({ type: 'FETCH_POSTS', payload: response.data });
 };
 
