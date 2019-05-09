@@ -1,7 +1,7 @@
 NOTE
 + BrowserRouter
   - เอาไว้ดู url เฉพาะหลังจาก localhost:3000
-
+  - รับ url มาจาก history component (background)
 
 + Route (<Route path="/" component={PageOne} />)
   - Route จะสนใจ path หลัง url เท่านั้น เช่น /, /page2, 
@@ -11,4 +11,8 @@ NOTE
   - ใช้ <a></a> ในการเปลี่ยน route ไม่ดีเพราะว่าคลิกทีนึงจะถูกส่ง server แล้ว server response index.js , rerender index.html ใหม่ execute bundle.js ใหม่ทุกครั้ง ใช้ Link แทน
 
 + Link (react-router-dom) component
+  - ใช้แทน <a></a> เมื่อ load page มีความหมายเดียวกับ a tag
+  - <Link to="/">Back to page One</Link>
+  - ป้องกัน (prevent) ไม่ให้ browser fetching new index.html แต่ url change
+  - history มาดู url แล้วส่งให้ BrowserRouter
 
