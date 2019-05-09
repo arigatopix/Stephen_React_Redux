@@ -2,6 +2,9 @@ NOTE
 + BrowserRouter
   - เอาไว้ดู url เฉพาะหลังจาก localhost:3000
   - รับ url มาจาก history component (background)
+  - ตอน deploy ไปใน server อย่าลืม config url path 
+    - server ปกติ จะ request - response กรณีหา url ไม่เจอจะส่ง 404
+    - react server ถ้าหา url ไม่เจอจะส่ง index.html page ไม่ได้ส่ง 404 ดังนั้นตอน deploy ต้อง config อีกที
 
 + Route (<Route path="/" component={PageOne} />)
   - Route จะสนใจ path หลัง url เท่านั้น เช่น /, /page2, 
@@ -16,3 +19,7 @@ NOTE
   - ป้องกัน (prevent) ไม่ให้ browser fetching new index.html แต่ url change
   - history มาดู url แล้วส่งให้ BrowserRouter
 
+++++++
+
++ Structure +
++ App เอาไว้รวม component ต่างๆ โดยใช้ route
