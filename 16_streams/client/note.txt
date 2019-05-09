@@ -1,6 +1,7 @@
 NOTE
 + BrowserRouter
   - เอาไว้ดู url เฉพาะหลังจาก localhost:3000
+  - ต้องมีโครงสร้าง div หุ้ม component ไว้อีกที
   - รับ url มาจาก history component (background)
   - ตอน deploy ไปใน server อย่าลืม config url path 
     - server ปกติ จะ request - response กรณีหา url ไม่เจอจะส่ง 404
@@ -18,6 +19,7 @@ NOTE
   - <Link to="/">Back to page One</Link>
   - ป้องกัน (prevent) ไม่ให้ browser fetching new index.html แต่ url change
   - history มาดู url แล้วส่งให้ BrowserRouter
+  - ห้ามใช้ <Link /> นอก <BrowserRouter> ดังนั้นทุก component ที่มี <Link /> จะต้องอยู่ภายใต้ BrowserRouter
 
 ++++++
 
