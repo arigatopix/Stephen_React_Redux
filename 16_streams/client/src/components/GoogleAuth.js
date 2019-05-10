@@ -1,7 +1,9 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { signIn, signOut } from '../actions';
 
 class GoogleAuth extends React.Component {
-  // init state ไม่ต้องใช้ redux ดูก็ได้ ใช้ function ของ google
+  // init state ไม่ต้องใช้ redux ดูก็ได้ ใช้ function ของ google แต่จะให้ดี ไม่ควรมี logic ใน component
   // isSignedIn first load เราไม่รู้ว่า signed รึยัง
   state = {
     isSignedIn: null
@@ -31,18 +33,23 @@ class GoogleAuth extends React.Component {
   }
 
   // Event handle
-  onAuthChange = () => {
-    // function ถูกสั่งเมื่อ state change และเปลี่ยน state ให้ Component rerender ไม่ต้อง reload page
-    this.setState({ isSignedIn: this.auth.isSignedIn.get() });
-    // .get() อยู่ใน prototype ของ isSignedIn
+  onAuthChange = isSignedIn => {
+    // เมื่อไหร่มีการ signIn, หรือ signOut จะส่งไปให้ redux store รับ state จาก this.auth.isSignedIn.listen()
+
+    // รอรับค่า state จาก redux store
+    if (isSignedIn) {
+      this.props.signIn();
+    } else {
+      this.props.signOut();
+    }
   };
 
-  onSignIn = () => {
+  onSignInClick = () => {
     // เรียก function ของ google จะใส่ใน onClick เลยก็ได้ แต่แยกออกมาก็จะเข้าใจง่ายดี
     this.auth.signIn();
   };
 
-  onSignOut = () => {
+  onSignOutClick = () => {
     this.auth.signOut();
   };
 
@@ -53,14 +60,17 @@ class GoogleAuth extends React.Component {
       return null;
     } else if (this.state.isSignedIn) {
       return (
-        <button onClick={this.onSignOut} className="ui green google button">
+        <button
+          onClick={this.onSignOutClick}
+          className="ui green google button"
+        >
           <i className="google icon" />
           Sign Out
         </button>
       );
     } else {
       return (
-        <button onClick={this.onSignIn} className="ui red google button">
+        <button onClick={this.onSignInClick} className="ui red google button">
           <i className="google icon" />
           Sign in with Google
         </button>
@@ -73,13 +83,17 @@ class GoogleAuth extends React.Component {
   }
 }
 
-export default GoogleAuth;
+export default connect(
+  null,
+  { signIn, signOut }
+)(GoogleAuth);
 
 /**
  * NOTE :
- * ---- Authentication ----
- * - จะต้องเรียก gapi.load(lib) ก่อน
- * - เรียก auth โดยใช้ gapi.client.init() ส่ง GoogleAuth object ซึ่งเป็น promises กลับมา ก็เลยใช้ .then ได้
- * - ใน doc หลังจากได้ object แล้ว GoogleAuth.then(onInit, onError)
- * - gapi.auth2.getAuthInstance() เป็น object สำหรับเรียกใช้ function ของ google เช่นการ signin signout ดูสถานะ
+ * ---- Redux ----
+ * - ใช้ redux เพื่อให้ access ข้อมูลจากส่วนกลางที่เดียว
+ * - เอา redux มาช่วยอ่าน state ของ google ว่า signIn หรือยัง
+ * - ย้าย logic ไว้ใน action แทนที่จะเป็น component
+ * - component ต่างๆ เรียก redux ไปใช้งานง่ายกว่า เรียก state จาก component
+ * - กดปุ่ม > action > google oauth > action(change oauth) > redux
  */
