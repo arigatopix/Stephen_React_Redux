@@ -3,12 +3,6 @@ import { connect } from 'react-redux';
 import { signIn, signOut } from '../actions';
 
 class GoogleAuth extends React.Component {
-  // init state ไม่ต้องใช้ redux ดูก็ได้ ใช้ function ของ google แต่จะให้ดี ไม่ควรมี logic ใน component
-  // isSignedIn first load เราไม่รู้ว่า signed รึยัง
-  state = {
-    isSignedIn: null
-  };
-
   // Load gapi google
   componentDidMount() {
     // เรียก lib, หลังจากเรียกเสร็จแล้ว callback fn จะเรียก init ขึ้นมา
@@ -24,9 +18,10 @@ class GoogleAuth extends React.Component {
         .then(() => {
           // เรียก Authentication function
           this.auth = window.gapi.auth2.getAuthInstance();
-          // check status ตอนแรกเริ่ม page load
-          this.setState({ isSignedIn: this.auth.isSignedIn.get() });
-          // event listener  เมื่อ status เปลี่ยนแปลงจะเรียก this.onAuthChange (เป็น function Listen for changes in the current user's sign-in state.)
+          // check status ตอนแรกเริ่ม page load โดยส่งค่าจาก google update ให้ action
+          this.onAuthChange(this.auth.isSignedIn.get());
+
+          // รอรับค่าจาก redux
           this.auth.isSignedIn.listen(this.onAuthChange);
         });
     });
@@ -34,9 +29,7 @@ class GoogleAuth extends React.Component {
 
   // Event handle
   onAuthChange = isSignedIn => {
-    // เมื่อไหร่มีการ signIn, หรือ signOut จะส่งไปให้ redux store รับ state จาก this.auth.isSignedIn.listen()
-
-    // รอรับค่า state จาก redux store
+    // ส่งให้ action true/false แล้ว redux จะส่งค่าจาก state กลับมา บล็อคนี้คอยดูค่าจาก store
     if (isSignedIn) {
       this.props.signIn();
     } else {
@@ -55,10 +48,10 @@ class GoogleAuth extends React.Component {
 
   renderAuthButton() {
     // check state isSignedIn
-    if (this.state.isSignedIn === null) {
+    if (this.props.isSignedIn === null) {
       // ไม่รู้ว่า status อะไร จะใส่ spinner ก็ได้ หรือ null ซ่อน
       return null;
-    } else if (this.state.isSignedIn) {
+    } else if (this.props.isSignedIn) {
       return (
         <button
           onClick={this.onSignOutClick}
@@ -83,8 +76,14 @@ class GoogleAuth extends React.Component {
   }
 }
 
+const mapStateToProps = state => {
+  // รับ state จาก redux store
+  // state.auth.isSignedIn ใช้แบบนี้เพราะเป็น function ของ google ส่ง true/false ใช้กับ button
+  return { isSignedIn: state.auth.isSignedIn };
+};
+
 export default connect(
-  null,
+  mapStateToProps,
   { signIn, signOut }
 )(GoogleAuth);
 
