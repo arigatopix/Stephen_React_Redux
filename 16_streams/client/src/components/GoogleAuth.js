@@ -20,21 +20,39 @@ class GoogleAuth extends React.Component {
       }).then(() => {
         // เรียก Authentication function
         this.auth = window.gapi.auth2.getAuthInstance();
-        // เรียก component rerender ถ้ามีการเปลี่ยนแปลง state .. โดย isSignedIn.get() จะ return true/false
-        this.setState({ isSignedIn : this.auth.isSignedIn.get() });
+        // check status ตอนแรกเริ่ม page load 
+        this.setState({ isSignedIn : this.auth.isSignedIn.get() }); 
+        // event listener  เมื่อ status เปลี่ยนแปลงจะเรียก this.onAuthChange (เป็น function Listen for changes in the current user's sign-in state.)
+        this.auth.isSignedIn.listen(this.onAuthChange);
       })
     });
   }
 
+  onAuthChange = () => {
+    // function ถูกสั่งเมื่อ state change และเปลี่ยน state ให้ Component rerender ไม่ต้อง reload page
+    this.setState({ isSignedIn : this.auth.isSignedIn.get() });
+    // .get() อยู่ใน prototype ของ isSignedIn 
+  };
 
   renderAuthButton() {
     // check state isSignedIn
     if (this.state.isSignedIn === null) {
-      return <div>I don't know if we are signed in</div>;
+      // ไม่รู้ว่า status อะไร จะใส่ spinner ก็ได้ หรือ null ซ่อน
+      return null;
     } else if (this.state.isSignedIn) {
-      return <div>I am signed</div>;
+      return (
+        <button className="ui green google button">
+          <i className="google icon"/>
+          Sign Out
+        </button>
+      );
     } else {
-      return <div>I am not sign in</div>
+      return (
+        <button className="ui red google button">
+          <i className="google icon"/>
+          Sign in with Google
+        </button>
+      );
     }
   }
 
@@ -44,7 +62,6 @@ class GoogleAuth extends React.Component {
 }
 
 export default GoogleAuth;
-
 
 /**
  * NOTE :
