@@ -31,7 +31,9 @@ class GoogleAuth extends React.Component {
   onAuthChange = isSignedIn => {
     // ส่งให้ action true/false แล้ว redux จะส่งค่าจาก state กลับมา บล็อคนี้คอยดูค่าจาก store
     if (isSignedIn) {
-      this.props.signIn();
+      // ส่ง google id เพื่อเช็คว่า user ไหนทำอะไร (ทดแทน user name ที่เราไม่มี) โดยใช้ gapi.auth2.getAuthInstance().currentUser.get().getId()
+      // ส่งให้ action และใช้งานผ่าน payload
+      this.props.signIn(this.auth.currentUser.get().getId());
     } else {
       this.props.signOut();
     }
