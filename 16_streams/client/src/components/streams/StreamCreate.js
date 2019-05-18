@@ -2,20 +2,38 @@ import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 
 class StreamCreate extends React.Component {
-  renderInput({ input, label, meta }) {
+  renderError({ error, touched }) {
+    // รับจาก meta สนใจแค่ตอน error  และตอนที่ user out of focus
+    // sematic ui จะซ่อน ui error message ไว้ ต้องไปเพิ่ม className error ที่ form
+    if (error && touched) {
+      return (
+        <div className="ui error tiny message">
+          <div className="header">{error}</div>
+        </div>
+      );
+    }
+  }
+
+  renderInput = ({ input, label, meta }) => {
     // Field ไม่รู้ว่าตัวเองเป็น input แบบไหน มีหน้าที่แค่ wiring ระหว่าง redux store กับ component ที่เป็น input
     // formProps รับค่ามาจาก Field component return input ที่มี function เกี่ยวกับ callback handler
     // onChange คือมีการแก้ไขเมื่อไหร่ ส่งข้อมูลไป formPorps, value ก็เช่นกัน
     // {...formProps.input} คือใช้ key value pairs เอา property จาก formPorps ทั้งหมดเมื่อ input element เรียกใช้งาน แบบ auto
     // destructuring {...formProps.input} เป็น { input }
+    // แสดง error message ตอนที่ input element out of focus ส่ง meta ไปทำเงื่อนไขใน renderError
+    // this ในนี้เป็น global scope (เพราะเรียกใช้ภายใต้ Field component) แก้โดยใช้ arrow function
+
+    // ช่วยให้ user เห็นง่ายขึ้น โดยเปลี่ยน className ให้แสดงสีเมื่อ error
+    const className = `field ${meta.error && meta.touched ? 'error' : ''}`;
+
     return (
-      <div className="field">
+      <div className={className}>
         <label>{label}</label>
-        <input {...input} />
-        <div>{meta.error}</div>
+        <input {...input} autoComplete="off" />
+        {this.renderError(meta)}
       </div>
     );
-  }
+  };
 
   onSubmit(formValue) {
     // formValue รับค่าจาก this.props.handleSubmit ข้อดีคือ return name, value ของ Field ที่รับจาก input
@@ -32,7 +50,7 @@ class StreamCreate extends React.Component {
     return (
       <form
         onSubmit={this.props.handleSubmit(this.onSubmit)}
-        className="ui form"
+        className="ui form error"
       >
         <Field name="title" component={this.renderInput} label="Enter Title" />
         <Field
@@ -40,15 +58,16 @@ class StreamCreate extends React.Component {
           component={this.renderInput}
           label="Enter Description"
         />
-        <button className="button primary">Submit</button>
+        <button className="ui button primary">Submit</button>
       </form>
     );
   }
 }
 
-// validation function
+// validate function
 const validate = formValue => {
   // เช็คความถูกต้อง { name : value } ของ component Field
+  // form จะไม่ถูก submit ถ้ามี error
   // จะตั้งให้ return NAME Field และ error message เป็น object
   // ตั้งค่าใน reduxForm เพื่อ wire up to redux-form ตั้งค่าใน redux  ชื่อเดียวกับ function validate
   // redux form จะรู้จัก function validate อัตโนมัติ จะต้องตั้งค่า return object ให้ตรงกับ name  ใน component field ด้วย
