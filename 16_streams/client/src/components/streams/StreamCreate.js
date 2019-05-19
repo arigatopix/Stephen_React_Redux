@@ -1,5 +1,9 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
+// connect เชื่อม component กับ action, redux store
+import { connect } from 'react-redux';
+// เรียก action
+import { createStream } from '../../actions';
 
 class StreamCreate extends React.Component {
   renderError({ error, touched }) {
