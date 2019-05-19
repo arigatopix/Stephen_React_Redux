@@ -1,4 +1,4 @@
-import _ from 'loadash';
+import _ from 'lodash';
 import {
   FETCH_STREAM,
   FETCH_STREAMS,
@@ -9,6 +9,11 @@ import {
 
 export default (state = {}, action) => {
   switch (action.type) {
+    case FETCH_STREAMS:
+      // แปลงจาก [ {id1, stream1}, {id1, stream2}} ] --> {"id1" : {id1 : stream1} , "id2" : {id2 : stream2}} โดยใช้ mapKeys จาก loadash
+      // เรียก state เดิม, และ concatenation (เรียงต่อกัน) object ใหม่เข้าไป
+      return { ...state, ..._.mapKeys(action.payload, 'id') };
+
     case FETCH_STREAM:
       // จะดึงข้อมูลจาก action ที่ส่ง action พร้อมกับ payload (response.data) เอามา update state ใน reducers
       // ใช้ Spread operator ตรง [] ไม่ใช่ array แต่เป็น key ของ object
