@@ -25,10 +25,17 @@ export const signOut = () => {
 // fetch data from apis เพื่อเอาไปใช้ใน component > connect > redux store
 // ใช้ async เพื่อ fetch data ต้องใช้ redux thunk
 
-export const createStream = formValues => async dispatch => {
+export const createStream = formValues => async (dispatch, getState) => {
   // post โดยรับ data ที่ submit มาจาก streamCreate
   // หลังจาก fetch เสร็จก็ dispatch แบบ manual เพื่อนำไป update ใน reducer
-  const response = await streams.post('/streams', formValues);
+  // รับ userId จาก redux store โดยใช้ getState() เพื่อเรียก state ใน store
+  // getStore เคยใช้ใน 14_blogs เพื่อเรียก state ในที่นี้จะใช้ auth.userId เพื่อบอกว่า user ไหนเป็นคนสร้าง
+
+  // destructuring { userId } คือ getState.auth.userId เป็น object ที่มี key : value
+  const { userId } = getState().auth;
+
+  // เพิ่ม userId ลงไปใน state ของ streams เพื่อบอกว่าใครสร้าง
+  const response = await streams.post('/streams', { ...formValues, userId });
 
   dispatch({ type: CREATE_STREAM, payload: response.data });
 };
