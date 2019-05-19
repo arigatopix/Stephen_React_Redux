@@ -8,6 +8,7 @@ import {
   DELETE_STREAM,
   EDIT_STREAM
 } from './types';
+import history from '../history';
 
 export const signIn = userId => {
   return {
@@ -38,8 +39,9 @@ export const createStream = formValues => async (dispatch, getState) => {
   // userId จะถูก post ไปที่ database ด้วย
   const response = await streams.post('/streams', { ...formValues, userId });
 
-  // หลังจาก createStream จะ navigation (redirect) ไปหน้า index
-  // จะ redirect หลังจาก post เสร็จแล้ว (await)
+  // redirect when create success
+  // สั่งให้ url เป็น localhost:3000/
+  history.push('/');
 
   dispatch({ type: CREATE_STREAM, payload: response.data });
 };
