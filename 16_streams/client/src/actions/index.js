@@ -35,6 +35,7 @@ export const createStream = formValues => async (dispatch, getState) => {
   const { userId } = getState().auth;
 
   // เพิ่ม userId ลงไปใน state ของ streams เพื่อบอกว่าใครสร้าง
+  // userId จะถูก post ไปที่ database ด้วย
   const response = await streams.post('/streams', { ...formValues, userId });
 
   dispatch({ type: CREATE_STREAM, payload: response.data });
