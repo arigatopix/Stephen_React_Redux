@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchStreams } from '../../actions';
 
@@ -12,7 +13,7 @@ class StreamList extends React.Component {
   renderAdmin(stream) {
     // เช็คว่าใครเป็นเจ้าของ stream โดยเช็ค userId จาก auth เทียบกับ streams
     // รับค่ามาจาก renderList() เทียบกับ mapStateToProps
-    if (stream.userId === this.props.userId) {
+    if (stream.userId === this.props.currentUserId) {
       return (
         <div className="right floated content">
           <button className="ui button primary">EDIT</button>
@@ -37,11 +38,27 @@ class StreamList extends React.Component {
     });
   }
 
+  renderCreate() {
+    // render ปุ่ม create เมื่อ login  แล้วเท่านั้น
+    // ใช้ Link ส่งไปอีกหน้า (to) streams/new
+    // config style เองเพื่อให้ปุ่มอยู่ด้านขวา
+    if (this.props.isSignedIn) {
+      return (
+        <div style={{ textAlign: 'right' }}>
+          <Link to="/streams/new" className="ui button primary">
+            Create Stream
+          </Link>
+        </div>
+      );
+    }
+  }
+
   render() {
     return (
       <div>
         <h2>Streams</h2>
         <div className="ui celled list">{this.renderList()}</div>
+        {this.renderCreate()}
       </div>
     );
   }
@@ -54,7 +71,8 @@ const mapStateToProps = state => {
   // เปลี่ยน state จาก object เป็น array โดยใช้ Object.value(obj) จะ return array value ของ obj (เป็น method ของ js)
   return {
     streams: Object.values(state.streams),
-    userId: state.auth.userId // เรียก userId จาก state auth เพื่อเช็คกับ userId ใน streams state ว่าใครสร้าง
+    currentUserId: state.auth.userId, // เรียก userId จาก state auth เพื่อเช็คกับ userId ใน streams state ว่าใครสร้าง
+    isSignedIn: state.auth.isSignedIn // เช็คว่า signIn มั้ยเพื่อแสดงปุ่ม create
   };
 };
 

@@ -38,6 +38,9 @@ export const createStream = formValues => async (dispatch, getState) => {
   // userId จะถูก post ไปที่ database ด้วย
   const response = await streams.post('/streams', { ...formValues, userId });
 
+  // หลังจาก createStream จะ navigation (redirect) ไปหน้า index
+  // จะ redirect หลังจาก post เสร็จแล้ว (await)
+
   dispatch({ type: CREATE_STREAM, payload: response.data });
 };
 
