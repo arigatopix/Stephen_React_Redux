@@ -1,5 +1,13 @@
 import streams from '../apis/streams';
-import { SIGN_IN, SIGN_OUT } from './types';
+import {
+  SIGN_IN,
+  SIGN_OUT,
+  CREATE_STREAM,
+  FETCH_STREAMS,
+  FETCH_STREAM,
+  DELETE_STREAM,
+  EDIT_STREAM
+} from './types';
 
 export const signIn = userId => {
   return {
@@ -20,5 +28,37 @@ export const signOut = () => {
 export const createStream = formValues => async dispatch => {
   // post โดยรับ data ที่ submit มาจาก streamCreate
   // หลังจาก fetch เสร็จก็ dispatch แบบ manual เพื่อนำไป update ใน reducer
-  streams.post('/streams', formValues);
+  const response = await streams.post('/streams', formValues);
+
+  dispatch({ type: CREATE_STREAM, payload: response.data });
+};
+
+export const fetchStreams = () => async dispatch => {
+  // GET /streams
+  const response = await streams.get('/streams');
+
+  dispatch({ type: FETCH_STREAMS, payload: response.data });
+};
+
+export const fetchStream = id => async dispatch => {
+  // GET streams/:id
+  const response = await streams.get(`/streams/${id}`);
+
+  dispatch({ type: FETCH_STREAM, payload: response.date });
+};
+
+export const editStream = (id, formValues) => async dispatch => {
+  // PUT streams/:id for edit
+  // รับข้อมูลเดิมมาด้วย (formValues)
+  const response = await streams.put(`/streams/${id}`, formValues);
+
+  dispatch({ type: EDIT_STREAM, payload: response.data });
+};
+
+export const deleteStream = id => async dispatch => {
+  // DELETE ไม่ต้อง return ค่าอะไร
+  await streams.delete(`/streams/${id}`);
+
+  // dispatch เพื่อ update ค่าใน redux store (ใช้ reducers)
+  dispatch({ type: DELETE_STREAM, payload: id });
 };

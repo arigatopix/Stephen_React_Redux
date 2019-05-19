@@ -39,13 +39,14 @@ class StreamCreate extends React.Component {
     );
   };
 
-  onSubmit(formValue) {
+  onSubmit = formValue => {
     // formValue รับค่าจาก this.props.handleSubmit ข้อดีคือ return name, value ของ Field ที่รับจาก input
     // ไม่ต้อง preventDefualt เพราะ redux-form ทำให้
 
     // ส่ง data ที่มาจาก redux form ให้ action (ผ่าน connect) อย่าลืมไปตั้งค่า redux thunk
+    // * ใช้ this.props จะเจอ error เพราะคนละ scope อย่าลืมเปลี่ยนเป็น arrow function
     this.props.createStream(formValue);
-  }
+  };
 
   render() {
     // form เป็น html element
