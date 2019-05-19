@@ -42,7 +42,9 @@ class StreamCreate extends React.Component {
   onSubmit(formValue) {
     // formValue รับค่าจาก this.props.handleSubmit ข้อดีคือ return name, value ของ Field ที่รับจาก input
     // ไม่ต้อง preventDefualt เพราะ redux-form ทำให้
-    console.log(formValue);
+
+    // ส่ง data ที่มาจาก redux form ให้ action (ผ่าน connect) อย่าลืมไปตั้งค่า redux thunk
+    this.props.createStream(formValue);
   }
 
   render() {
@@ -92,12 +94,18 @@ const validate = formValue => {
   return errors;
 };
 
-export default reduxForm({
+// wrap ทั้งหมด เพื่อใช้ใน connect()(reduxForm)
+const formWraped = reduxForm({
   // คล้ายๆ connect() เรียก function แต่อันนี้เรียกผ่าน object เพื่อ register ใน redux-form เก็บ name, value หรืออื่นๆ ที่เราเรียกใช้
   // form ตั้งชื่อให้เหมือนกับ reducer , streamCreater จะถูกสร้างใน redux-store ภายใน form
   form: 'streamCreate',
   validate
 })(StreamCreate);
+
+export default connect(
+  null,
+  { createStream }
+)(formWraped);
 
 /**
  *  NOTE
