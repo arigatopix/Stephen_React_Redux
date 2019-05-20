@@ -1,5 +1,6 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
+import { Link } from 'react-router-dom';
 
 // มีหน้าที่เก็บ Logic / template ของ redux form แล้ว callback ไปหา  Parent (StreamCreate, StreamEdit) ผ่าน props
 class StreamForm extends React.Component {
@@ -45,6 +46,9 @@ class StreamForm extends React.Component {
           label="Enter Description"
         />
         <button className="ui button primary">Submit</button>
+        <Link to="/" className="ui negative button">
+          Back
+        </Link>
       </form>
     );
   }

@@ -78,4 +78,7 @@ export const deleteStream = id => async dispatch => {
 
   // dispatch เพื่อ update ค่าใน redux store (ใช้ reducers)
   dispatch({ type: DELETE_STREAM, payload: id });
+
+  // redirect
+  history.push('/');
 };

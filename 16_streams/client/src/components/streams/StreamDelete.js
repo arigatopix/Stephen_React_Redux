@@ -1,6 +1,7 @@
 import React from 'react';
-import { fetchStream } from '../../actions';
+import { fetchStream, deleteStream } from '../../actions';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import Modal from '../Modal';
 import history from '../../history';
 
@@ -17,11 +18,22 @@ class StreamDelete extends React.Component {
   // div ที่มี button 2 อัน semantic แสดงผล style ไม่ถูก เพราะมัน neste (action > div > button) และ jsx ไม่อนุญาตให้ render jsx 2 อันโดยไม่ผ่าน div
   // * วิธีการแก้ไขคือใช้ React.Fracment component แทนที่ <React.Fragment> เป็น invisible element ไม่มีผลต่อการ render ไม่แสดงผลใน browser
   // มีไว้เพื่อต้องการ render JSX หลายๆ อัน และไม่ต้องการ tag element อะไรที่มีผลต่อ render
+
   renderActions() {
+    // helper function render button
+    // onClick ใช้ arrow function เพราะว่าต้องระบุ id, และถ้าเรียก this.props.deleteStrem(id) เมื่อไหร่ที่ render หน้าเพจ function จะถูกสั่งใช้งานทันที
+    const { id } = this.props.match.params;
     return (
       <React.Fragment>
-        <div className="ui red approve button">Delelte</div>
-        <div className="ui button">Cancel</div>
+        <button
+          onClick={() => this.props.deleteStream(id)}
+          className="ui red approve button"
+        >
+          Delelte
+        </button>
+        <Link to="/" className="ui button">
+          Cancel
+        </Link>
       </React.Fragment>
     );
   }
@@ -58,5 +70,5 @@ const mapStateToProps = (state, ownProps) => {
 
 export default connect(
   mapStateToProps,
-  { fetchStream }
+  { fetchStream, deleteStream }
 )(StreamDelete);
