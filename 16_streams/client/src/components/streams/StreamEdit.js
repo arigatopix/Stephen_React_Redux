@@ -14,9 +14,8 @@ class StreamEdit extends React.Component {
   }
 
   render() {
-    // เริ่มต้นระหว่าง fetch ข้อมูล this.props.stream จะ undefined
-
     if (!this.props.stream) {
+      // เริ่มต้นระหว่าง fetch ข้อมูล this.props.stream จะ undefined
       return <div>Loading ...</div>;
     } else {
       return <div>{this.props.stream.title}</div>;
