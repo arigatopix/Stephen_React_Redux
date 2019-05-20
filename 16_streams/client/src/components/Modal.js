@@ -1,16 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import history from '../history';
 
 const Modal = props => {
   // แสดงผลเมื่อเรียกไปใช้งานแบบ component
   // เมื่อคลิกข้างนอก ให้ปิด Modal โดยใช้ url จาก history
+  // ย้ายการ redirect ไปไว้ที่ Parent component
+  // มีวิธี dismiss และเปิด modal โดยไม่ผ่าน Route ที่ Q&A Lecture275
   // event handler ปกติจะ delegate ไปหา element ด้านล่าง คือกดอันไหนก็จะ redirect ให้เพิ่ม event ตรง <div> modal
   return ReactDOM.createPortal(
-    <div
-      onClick={() => history.push('/')}
-      className="ui dimmer modals visible active"
-    >
+    <div onClick={props.onDismiss} className="ui dimmer modals visible active">
       <div
         onClick={e => e.stopPropagation()}
         className="ui standard modal visible active"
