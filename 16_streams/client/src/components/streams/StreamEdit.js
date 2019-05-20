@@ -1,13 +1,28 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { fetchStream } from '../../actions';
 
-const StreamEdit = props => {
+class StreamEdit extends React.Component {
   // เริ่มต้น load โดยพิมพ์ url เข้ามา props (ที่มาจาก mapStateToProps)จะเป็น undefined เพราะยังไม่ได้ถูกดึงจาก redux store
   // ถ้ากลับไปที่หน้า ('/') แล้วกด edit ข้อมูลจาก redux จะถูกส่งมา เพราะว่า redux store ถูก fetch โดย componentDidMout(fetchStream)
   // React-Router แต่ละ component เป็นอิสระต่อกัน (isolate) ต้อง fetch data แบบ manaul หมายถึง ถ้าพิมพ์เข้า url('streams/edit/:id') ตรงๆ  component นี้จะต้องเรียกข้อมูลจาก store เอง
-  console.log(props);
-  return <div>StreamEdit</div>;
-};
+  // เปลี่ยนเป็น class base แล้วใช้ componentDidMount เพื่อ fetch ข้อมูลผ่าน id ที่มาจาก url แล้วอย่าลืม config ใน connect
+
+  componentDidMount() {
+    // เรียก action เพื่อ fetchStream เพราะว่าแต่ละ component isolate กัน
+    this.props.fetchStream(this.props.match.params.id);
+  }
+
+  render() {
+    // เริ่มต้นระหว่าง fetch ข้อมูล this.props.stream จะ undefined
+
+    if (!this.props.stream) {
+      return <div>Loading ...</div>;
+    } else {
+      return <div>{this.props.stream.title}</div>;
+    }
+  }
+}
 
 const mapStateToProps = (state, ownProps) => {
   // รับ state จาก redux store
@@ -16,7 +31,10 @@ const mapStateToProps = (state, ownProps) => {
   return { stream: state.streams[ownProps.match.params.id] };
 };
 
-export default connect(mapStateToProps)(StreamEdit);
+export default connect(
+  mapStateToProps,
+  { fetchStream }
+)(StreamEdit);
 
 /** NOTE
  * - props เป็นของ Route compnent
