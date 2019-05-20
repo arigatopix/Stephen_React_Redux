@@ -12,9 +12,14 @@
     },
     {
       "title": "I Created This Stream",
-      "description": "This was made by me",
+      "description": "EDIT by PATCH method",
       "userId": "117355033348969043494",
       "id": 3
+    },
+    {
+      "title": "Me Streaming Component Reuse",
+      "description": "Edit description",
+      "id": 4
     }
   ]
 }
