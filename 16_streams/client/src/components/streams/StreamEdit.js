@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
 import { fetchStream, editStream } from '../../actions';
@@ -11,6 +12,8 @@ class StreamEdit extends React.Component {
 
   onSubmit(formValues) {
     // callback function รับค่าจาก StreamForm ส่งให้ action
+    // ปัญหาคือ formValues มันส่ง object ทั้งก้อน รวมถึง id, userId ให้ backend ด้วย ซึ่งใน form มันให้ edit แค่ title, description ดังนั้น การส่งทั้งก้อนอาจมีปัญหา
+    // แก้ปัญหาด้วยการกำหนด initialValues ให้เรียก values ไปแก้ไขเฉพาะ title, description ใช้ lodash _.pick(obj, 'title', 'description') จะ retun แค่ property title, description
     console.log(formValues);
   }
 
@@ -20,13 +23,14 @@ class StreamEdit extends React.Component {
       return <div>Loading ...</div>;
     } else {
       // initialValues เป็น method ของ redux form (ติดมากับ StreamForm component) เพื่อกำหนดค่าเริ่มต้น โดยสัมพันธ์กับ <Field/> component ภายในกำหนดเป็น object เรียกดูได้ใน this.props ของ StreamsForm.js
-      // กำหนด init โดยใช้ this.props.stream เพราะมัน return object ที่มี title , description
+      // กำหนด init โดยใช้ this.props.stream เพราะมัน return object ที่มี title , description รวมถึง userId, id
       // กำหนดเอง ไม่ต้องผ่าน props ก็ได้ เช่น initialValues={{ title: 'ei ei', other: 'blah' }} แต่ other ไม่มีใน Field ก็จะไม่แสดงผลใน Form
+      // ดู state ใน redux form  จะเห็น property ที่กำหนดไว้
       return (
         <div>
           <h3>Stream Edit</h3>
           <StreamForm
-            initialValues={this.props.stream}
+            initialValues={_.pick(this.props.stream, 'title', 'description')}
             onSubmit={this.onSubmit}
           />
         </div>

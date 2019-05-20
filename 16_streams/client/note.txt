@@ -25,3 +25,7 @@ NOTE
 
 + Structure +
 + App เอาไว้รวม component ต่างๆ โดยใช้ route
+
+++++
+Lodash index
+_.pick(obj, 'key') -> return new object ที่มีแต่ key value ที่ต้องการ
