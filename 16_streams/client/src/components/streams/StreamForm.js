@@ -1,7 +1,7 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 
-// มีหน้าที่เก็บ Logic / template ของ redux form แล้ว callback ไปหา  Parent (StreamCreate, StreamEdit)
+// มีหน้าที่เก็บ Logic / template ของ redux form แล้ว callback ไปหา  Parent (StreamCreate, StreamEdit) ผ่าน props
 class StreamForm extends React.Component {
   // check if input out of focus เอา props ของ redux form มาใช้
   renderError({ error, touched }) {
@@ -26,7 +26,7 @@ class StreamForm extends React.Component {
   };
 
   onSubmit = formValue => {
-    // *  callback to parent รับข้อมูลจาก input
+    // *  callback to parent ผ่าน props component ของ react
     this.props.onSubmit(formValue);
   };
 
