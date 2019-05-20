@@ -13,10 +13,14 @@ class StreamList extends React.Component {
   renderAdmin(stream) {
     // เช็คว่าใครเป็นเจ้าของ stream โดยเช็ค userId จาก auth เทียบกับ streams
     // รับค่ามาจาก renderList() เทียบกับ mapStateToProps
+    // ใส่ link แทนที่ button และใส่ path ด้วย template string ต้องไปแก้ไข Route ใน App.js ด้วย ไม่งั้น React จะไม่รู้ว่าจะแสดงหน้าอะไร
+    // ใส่ ://
     if (stream.userId === this.props.currentUserId) {
       return (
         <div className="right floated content">
-          <button className="ui button primary">EDIT</button>
+          <Link to={`/streams/edit/${stream.id}`} className="ui button primary">
+            EDIT
+          </Link>
           <button className="ui button negative">DELETE</button>
         </div>
       );

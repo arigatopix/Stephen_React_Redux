@@ -16,7 +16,7 @@ const App = () => {
           <Header />
           <Route path="/" exact component={StreamList} />
           <Route path="/streams/new" exact component={StreamCreate} />
-          <Route path="/streams/edit" exact component={StreamEdit} />
+          <Route path="/streams/edit/:id" exact component={StreamEdit} />
           <Route path="/streams/delete" exact component={StreamDelete} />
           <Route path="/streams/show" exact component={StreamShow} />
         </div>
@@ -26,3 +26,9 @@ const App = () => {
 };
 
 export default App;
+
+/**
+ * NOTE
+ * -- ROUTE --
+ * - ใส่ specific id ให้ route มองเห็นตัวเลขที่ :id ตัว Componente Route จะ return object ให้ใช้
+ */
