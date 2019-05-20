@@ -1,16 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { fetchStream } from '../../actions';
+import { fetchStream, editStream } from '../../actions';
+import StreamForm from './StreamForm';
 
 class StreamEdit extends React.Component {
-  // เริ่มต้น load โดยพิมพ์ url เข้ามา props (ที่มาจาก mapStateToProps)จะเป็น undefined เพราะยังไม่ได้ถูกดึงจาก redux store
-  // ถ้ากลับไปที่หน้า ('/') แล้วกด edit ข้อมูลจาก redux จะถูกส่งมา เพราะว่า redux store ถูก fetch โดย componentDidMout(fetchStream)
-  // React-Router แต่ละ component เป็นอิสระต่อกัน (isolate) ต้อง fetch data แบบ manaul หมายถึง ถ้าพิมพ์เข้า url('streams/edit/:id') ตรงๆ  component นี้จะต้องเรียกข้อมูลจาก store เอง
-  // เปลี่ยนเป็น class base แล้วใช้ componentDidMount เพื่อ fetch ข้อมูลผ่าน id ที่มาจาก url แล้วอย่าลืม config ใน connect
-
   componentDidMount() {
-    // เรียก action เพื่อ fetchStream เพราะว่าแต่ละ component isolate กัน
+    // เรียก action เพื่อ fetchStream เรียก streams ใน redux store เพราะว่าแต่ละ component isolate กัน
     this.props.fetchStream(this.props.match.params.id);
+  }
+
+  onSubmit(formValues) {
+    // callback function รับค่าจาก StreamForm ส่งให้ action
+    console.log(formValues);
   }
 
   render() {
@@ -18,7 +19,18 @@ class StreamEdit extends React.Component {
       // เริ่มต้นระหว่าง fetch ข้อมูล this.props.stream จะ undefined
       return <div>Loading ...</div>;
     } else {
-      return <div>{this.props.stream.title}</div>;
+      // initialValues เป็น method ของ redux form (ติดมากับ StreamForm component) เพื่อกำหนดค่าเริ่มต้น โดยสัมพันธ์กับ <Field/> component ภายในกำหนดเป็น object เรียกดูได้ใน this.props ของ StreamsForm.js
+      // กำหนด init โดยใช้ this.props.stream เพราะมัน return object ที่มี title , description
+      // กำหนดเอง ไม่ต้องผ่าน props ก็ได้ เช่น initialValues={{ title: 'ei ei', other: 'blah' }} แต่ other ไม่มีใน Field ก็จะไม่แสดงผลใน Form
+      return (
+        <div>
+          <h3>Stream Edit</h3>
+          <StreamForm
+            initialValues={this.props.stream}
+            onSubmit={this.onSubmit}
+          />
+        </div>
+      );
     }
   }
 }
@@ -32,7 +44,7 @@ const mapStateToProps = (state, ownProps) => {
 
 export default connect(
   mapStateToProps,
-  { fetchStream }
+  { fetchStream, editStream }
 )(StreamEdit);
 
 /** NOTE
@@ -40,4 +52,5 @@ export default connect(
  * - ดู url และ return object ตามที่กำหนดใน url (match)
  * /streams/:anything/:something จะได้ params anything และ something เอาไปใช้งาน
  * --- เชื่อมระหว่าง Route componente กับข้อมูลใน redux store เพื่อแสดงข้อมูล stream ที่ต้องการแก้ไข
+ * --- ใช้ StreamForm เพื่อ reuse code
  */

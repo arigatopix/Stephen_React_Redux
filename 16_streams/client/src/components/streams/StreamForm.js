@@ -27,6 +27,7 @@ class StreamForm extends React.Component {
 
   onSubmit = formValue => {
     // *  callback to parent ผ่าน props component ของ react
+    // formValue ได้มาจาก handleSubmit เป็น method ของ redux form
     this.props.onSubmit(formValue);
   };
 
