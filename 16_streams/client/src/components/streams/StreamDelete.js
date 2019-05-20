@@ -8,6 +8,7 @@ const StreamDelete = () => {
   // สร้างเหมือนเป็น jsx อันนึง เพื่อแสดงผลปุ่ม action
   // div ที่มี button 2 อัน semantic แสดงผล style ไม่ถูก เพราะมัน neste (action > div > button) และ jsx ไม่อนุญาตให้ render jsx 2 อันโดยไม่ผ่าน div
   // * วิธีการแก้ไขคือใช้ React.Fracment component แทนที่ <React.Fragment> เป็น invisible element ไม่มีผลต่อการ render ไม่แสดงผลใน browser
+  // มีไว้เพื่อต้องการ render JSX หลายๆ อัน และไม่ต้องการ tag element อะไรที่มีผลต่อ render
   const actions = (
     <React.Fragment>
       <div className="ui red approve button">Delelte</div>
