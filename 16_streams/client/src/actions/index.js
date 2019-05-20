@@ -63,7 +63,9 @@ export const fetchStream = id => async dispatch => {
 export const editStream = (id, formValues) => async dispatch => {
   // PUT streams/:id for edit
   // รับข้อมูลเดิมมาด้วย (formValues)
-  const response = await streams.put(`/streams/${id}`, formValues);
+  // PUT method Update ALL properties of a record
+  // PATCH method Update SOME properties of a record เพื่อให้ userId, id ที่ไม่ได้รับจาก StreamEdit overwrite หายไปจาก record
+  const response = await streams.patch(`/streams/${id}`, formValues);
 
   // redirect
   history.push('/');

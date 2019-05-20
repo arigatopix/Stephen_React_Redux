@@ -13,7 +13,8 @@ class StreamEdit extends React.Component {
   onSubmit = formValues => {
     // callback function รับค่าจาก StreamForm ส่งให้ action
     // send formValues to action ไปดู action ต้องการ (id, formValues)
-    // จำไว้ว่าตอนนี้ id, userId ถูกตัดออกไปจาก formValues แล้ว
+    // จำไว้ว่าตอนนี้ id, userId ถูกตัดออกไปจาก formValues แล้ว เมื่อ editStream จะทำให้ property ทั้งสองอันหายไปจาก object
+    // editStream ใช้ http method PUT จะทำให้ property ของ obj ถูก overwrite ดังนั้น ต้องการอัพเดทแค่ title, description ก็เปลี่ยนมาใช้ patch
     this.props.editStream(this.props.match.params.id, formValues);
   };
 
