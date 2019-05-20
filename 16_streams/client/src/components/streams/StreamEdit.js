@@ -10,12 +10,12 @@ class StreamEdit extends React.Component {
     this.props.fetchStream(this.props.match.params.id);
   }
 
-  onSubmit(formValues) {
+  onSubmit = formValues => {
     // callback function รับค่าจาก StreamForm ส่งให้ action
-    // ปัญหาคือ formValues มันส่ง object ทั้งก้อน รวมถึง id, userId ให้ backend ด้วย ซึ่งใน form มันให้ edit แค่ title, description ดังนั้น การส่งทั้งก้อนอาจมีปัญหา
-    // แก้ปัญหาด้วยการกำหนด initialValues ให้เรียก values ไปแก้ไขเฉพาะ title, description ใช้ lodash _.pick(obj, 'title', 'description') จะ retun แค่ property title, description
-    console.log(formValues);
-  }
+    // send formValues to action ไปดู action ต้องการ (id, formValues)
+    // จำไว้ว่าตอนนี้ id, userId ถูกตัดออกไปจาก formValues แล้ว
+    this.props.editStream(this.props.match.params.id, formValues);
+  };
 
   render() {
     if (!this.props.stream) {
@@ -26,6 +26,8 @@ class StreamEdit extends React.Component {
       // กำหนด init โดยใช้ this.props.stream เพราะมัน return object ที่มี title , description รวมถึง userId, id
       // กำหนดเอง ไม่ต้องผ่าน props ก็ได้ เช่น initialValues={{ title: 'ei ei', other: 'blah' }} แต่ other ไม่มีใน Field ก็จะไม่แสดงผลใน Form
       // ดู state ใน redux form  จะเห็น property ที่กำหนดไว้
+      // ปัญหาคือ formValues มันส่ง object ทั้งก้อน รวมถึง id, userId ให้ backend ด้วย ซึ่งใน form มันให้ edit แค่ title, description ดังนั้น การส่งทั้งก้อนอาจมีปัญหา
+      // แก้ปัญหาด้วยการกำหนด initialValues ให้เรียก values ไปแก้ไขเฉพาะ title, description ใช้ lodash _.pick(obj, 'title', 'description') จะ retun แค่ property title, description
       return (
         <div>
           <h3>Stream Edit</h3>
