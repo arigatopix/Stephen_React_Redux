@@ -1,33 +1,62 @@
 import React from 'react';
+import { fetchStream } from '../../actions';
+import { connect } from 'react-redux';
 import Modal from '../Modal';
 import history from '../../history';
 
-const StreamDelete = () => {
+class StreamDelete extends React.Component {
+  componentDidMount() {
+    // fetchStream เมื่อเข้า url มาจะได้โหลดถูกอัน
+    // ตั้งค่า connect และ action ให้เรียบร้อย
+    this.props.fetchStream(this.props.match.params.id);
+  }
+
   // เรียกใช้ Modal เพื่อแสดง popup
   // ใน Modal ส่ง props ไปแสดงผล สามารถ render JSX ได้ด้วย
-
   // สร้างเหมือนเป็น jsx อันนึง เพื่อแสดงผลปุ่ม action
   // div ที่มี button 2 อัน semantic แสดงผล style ไม่ถูก เพราะมัน neste (action > div > button) และ jsx ไม่อนุญาตให้ render jsx 2 อันโดยไม่ผ่าน div
   // * วิธีการแก้ไขคือใช้ React.Fracment component แทนที่ <React.Fragment> เป็น invisible element ไม่มีผลต่อการ render ไม่แสดงผลใน browser
   // มีไว้เพื่อต้องการ render JSX หลายๆ อัน และไม่ต้องการ tag element อะไรที่มีผลต่อ render
-  const actions = (
-    <React.Fragment>
-      <div className="ui red approve button">Delelte</div>
-      <div className="ui button">Cancel</div>
-    </React.Fragment>
-  );
+  renderActions() {
+    return (
+      <React.Fragment>
+        <div className="ui red approve button">Delelte</div>
+        <div className="ui button">Cancel</div>
+      </React.Fragment>
+    );
+  }
 
-  return (
-    <div>
-      <div>StreamDelete</div>
+  renderContent() {
+    // อย่าลืมว่า enter เข้า url มา stream ต้องถูก fetch ก่อน
+    // และเราไม่อยากให้ app แสดง loading แล้วค่อยแสดง Modal เราจะให้แสดง Modal เลย แล้วก็ใน title ก็ load ไป
+    // ใช้ helper function แสดงผลใน title
+    if (!this.props.stream) {
+      return 'Are you sure you want to delete this stream?';
+    }
+    return `Are you sure you want to delete the stream wit title : ${
+      this.props.stream.title
+    }`;
+  }
+
+  render() {
+    // * Modal ไม่ต้องมี div คลอบเพราะไม่ต้อง render อะไร และเพราะว่าสร้างด้วย React.Portals โดยตรง
+    return (
       <Modal
         title="Delete Stream"
-        content="Are you sure you want to delete this stream?"
-        actions={actions}
+        content={this.renderContent()}
+        actions={this.renderActions()}
         onDismiss={() => history.push('/')}
       />
-    </div>
-  );
+    );
+  }
+}
+
+const mapStateToProps = (state, ownProps) => {
+  // เช็ค state เทียบกับ url ที่ได้รับมา
+  return { stream: state.streams[ownProps.match.params.id] };
 };
 
-export default StreamDelete;
+export default connect(
+  mapStateToProps,
+  { fetchStream }
+)(StreamDelete);
