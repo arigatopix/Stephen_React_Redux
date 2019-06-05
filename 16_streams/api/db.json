@@ -14,6 +14,12 @@
       "title": "Me Streaming Component Reuse",
       "description": "Edit description",
       "id": 4
+    },
+    {
+      "title": "My new stream",
+      "description": "Test new stream",
+      "userId": "117355033348969043494",
+      "id": 5
     }
   ]
 }
