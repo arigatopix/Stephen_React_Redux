@@ -1,5 +1,5 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from "react";
+import ReactDOM from "react-dom";
 
 const Modal = props => {
   // แสดงผลเมื่อเรียกไปใช้งานแบบ component
@@ -18,7 +18,7 @@ const Modal = props => {
         <div className="actions">{props.actions}</div>
       </div>
     </div>,
-    document.querySelector('#modal')
+    document.querySelector("#modal")
   );
 };
 
@@ -30,4 +30,5 @@ export default Modal;
  * - Potals จะสร้าง JSX คู่กับ root element เพื่อเทียบ root กับ modal ด้วย z-index ของ css
  * - เรียกใช้ Modal คล้ายๆว่า component นี้เป็น Child จึงเอาข้อมูลจาก Parant ผ่าน props
  * - ReactDOM.createPortal(JSX, querySelector) เพื่อ render JSX
+ * e.stopPropagation() คือการหยุดพฤติกรร buble เนื่องจาก ปกติ div ด้านใน ถ้ากดคลิก div อันนอกจะรับ event ไปด้วย จึงต้องแก้ไขด้วย stopPropagation
  */

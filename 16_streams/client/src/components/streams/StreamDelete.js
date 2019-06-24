@@ -1,9 +1,9 @@
-import React from 'react';
-import { fetchStream, deleteStream } from '../../actions';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import Modal from '../Modal';
-import history from '../../history';
+import React from "react";
+import { fetchStream, deleteStream } from "../../actions";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import Modal from "../Modal";
+import history from "../../history";
 
 class StreamDelete extends React.Component {
   componentDidMount() {
@@ -29,7 +29,7 @@ class StreamDelete extends React.Component {
           onClick={() => this.props.deleteStream(id)}
           className="ui red approve button"
         >
-          Delelte
+          Delete
         </button>
         <Link to="/" className="ui button">
           Cancel
@@ -43,7 +43,7 @@ class StreamDelete extends React.Component {
     // และเราไม่อยากให้ app แสดง loading แล้วค่อยแสดง Modal เราจะให้แสดง Modal เลย แล้วก็ใน title ก็ load ไป
     // ใช้ helper function แสดงผลใน title
     if (!this.props.stream) {
-      return 'Are you sure you want to delete this stream?';
+      return "Are you sure you want to delete this stream?";
     }
     return `Are you sure you want to delete the stream wit title : ${
       this.props.stream.title
@@ -57,7 +57,7 @@ class StreamDelete extends React.Component {
         title="Delete Stream"
         content={this.renderContent()}
         actions={this.renderActions()}
-        onDismiss={() => history.push('/')}
+        onDismiss={() => history.push("/")}
       />
     );
   }
