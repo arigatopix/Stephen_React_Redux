@@ -1,7 +1,7 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { fetchStreams } from '../../actions';
+import React from "react";
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { fetchStreams } from "../../actions";
 
 class StreamList extends React.Component {
   // first load เรียก all Streams โดยใช้ action (action > connect ), จะแสดงผลหน้าจอได้ก็ต่อเมื่อใช้ mapStateToProps
@@ -39,7 +39,7 @@ class StreamList extends React.Component {
           {this.renderAdmin(stream)}
           <i className="lage middle aligned icon camera" />
           <div className="content">
-            {stream.title}
+            <Link to={`/streams/${stream.id}`}>{stream.title}</Link>
             <div className="description">{stream.description}</div>
           </div>
         </div>
@@ -53,7 +53,7 @@ class StreamList extends React.Component {
     // config style เองเพื่อให้ปุ่มอยู่ด้านขวา
     if (this.props.isSignedIn) {
       return (
-        <div style={{ textAlign: 'right' }}>
+        <div style={{ textAlign: "right" }}>
           <Link to="/streams/new" className="ui button primary">
             Create Stream
           </Link>
