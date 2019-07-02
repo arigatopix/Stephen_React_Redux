@@ -2,21 +2,27 @@ import React from "react";
 import LanguageContext from "../contexts/LanguageContext";
 
 class Button extends React.Component {
-  // Link to contextObject
-  static contextType = LanguageContext;
-  // static (ค่าคงที่ของ class) เป็น syntax แบบ ES2015 ซึ่งไม่ใช่ function
-  // contextType เป็น spacial property
-  // สามารถพิมพ์ Button.contextType = LanguageContext นอก class ก็ได้
-  // เอามาแสดงผลใน Nested Child ผ่าน this.context
-  // ทุกครั้งที่มีการเปลี่ยน state .. component จะถูก rerender และจะถูก console.log(this.context)
+  // helper function
+  renderSubmit(value) {
+    return value === "english" ? "Submit" : "ส่ง";
+  }
 
   render() {
-    const text = this.context === "english" ? "Submit" : "ส่ง";
-
-    console.log(this.context);
-
-    return <button className="ui button primary">{text}</button>;
+    return (
+      <button className="ui button primary">
+        <LanguageContext.Consumer>
+          {value => this.renderSubmit(value)}
+        </LanguageContext.Consumer>
+      </button>
+    );
   }
 }
 
 export default Button;
+
+/* 
+ใช้ Consumer แทน this.context
+  - เรียกใช้งาน value เหมือนกับ react component ปกติ โดยใช้ function
+  - ใช้ helper function โดย Consumer จะเรียก value ใน App component (Parent component to Child component) ให้อัตโนมัติ
+  - อย่าลืม เป็น class-base ต้องใช้ this.helperfunction
+*/
