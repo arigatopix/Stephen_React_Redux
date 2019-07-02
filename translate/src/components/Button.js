@@ -8,7 +8,7 @@ class Button extends React.Component {
   // contextType เป็น spacial property
   // สามารถพิมพ์ Button.contextType = LanguageContext นอก class ก็ได้
   // เอามาแสดงผลใน Nested Child ผ่าน this.context
-  // ทุกครั้งที่มีการเปลี่ยน state .. component จะถูก rerender
+  // ทุกครั้งที่มีการเปลี่ยน state .. component จะถูก rerender และจะถูก console.log(this.context)
 
   render() {
     const text = this.context === "english" ? "Submit" : "ส่ง";
