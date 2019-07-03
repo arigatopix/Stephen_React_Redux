@@ -10,7 +10,6 @@ class Button extends React.Component {
 
   // ColorContext Helper function
   renderButtonColor(color) {
-    console.log(LanguageContext.Consumer);
     return (
       <button className={`ui button ${color}`}>
         <LanguageContext.Consumer>
@@ -23,7 +22,7 @@ class Button extends React.Component {
   render() {
     return (
       <ColorContext.Consumer>
-        {color => this.renderButtonColor(color)}
+        {({ color }) => this.renderButtonColor(color)}
       </ColorContext.Consumer>
     );
   }

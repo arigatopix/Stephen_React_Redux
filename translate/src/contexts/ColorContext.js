@@ -1,4 +1,25 @@
 import React from "react";
 
-export default React.createContext();
-// จะใส่ default value หรือไม่ก็ได้ เพราะเราก็จะเอา value จาก Provider อยู่ดี
+const Context = React.createContext();
+
+export class ColorStore extends React.Component {
+  state = { color: "red" };
+
+  onColorChange = () => {
+    this.setState({
+      color: this.state.color === "primary" ? "red" : "primary"
+    });
+  };
+
+  render() {
+    return (
+      <Context.Provider
+        value={{ ...this.state, onColorChange: this.onColorChange }}
+      >
+        {this.props.children}
+      </Context.Provider>
+    );
+  }
+}
+
+export default Context;
