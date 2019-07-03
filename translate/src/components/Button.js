@@ -4,16 +4,17 @@ import ColorContext from "../contexts/ColorContext";
 
 class Button extends React.Component {
   // helper function
-  renderSubmit(value) {
-    return value === "english" ? "Submit" : "ส่ง";
+  renderSubmit(language) {
+    return language === "english" ? "Submit" : "ส่ง";
   }
 
   // ColorContext Helper function
   renderButtonColor(color) {
+    console.log(LanguageContext.Consumer);
     return (
       <button className={`ui button ${color}`}>
         <LanguageContext.Consumer>
-          {value => this.renderSubmit(value)}
+          {({ language }) => this.renderSubmit(language)}
         </LanguageContext.Consumer>
       </button>
     );
@@ -42,4 +43,11 @@ export default Button;
   - ***** Child ของ ColorContext Component ต้องเป็น function ต้อง return JSX ทั้ง Block (button และ LanguageContext)
   - ใช้ Helper function เพื่อให้มันดู อ่านง่ายๆ
 
+*/
+
+/* 
+* ใช้ Consumer เรียกดู state ใน Context Object 
+* - จากเดิมส่งผ่าน value ด้วย string แต่พอใช้ LanguageStore จะเป็น object 
+?  - แสดง context โดยการ destructuring  {({ language }) => this.renderSubmit(language)} 
+  - ดูตาม document การใช้ Consumer จะเหมาะกับหลายๆ context และใช้ Destructuring ตามตัวอย่างนี้ {({theme, toggleTheme}) => ( ...
 */
