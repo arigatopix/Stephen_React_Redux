@@ -1,30 +1,33 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const ResourceList = ({ resource }) => {
-  // ปกติจะเป็น props.resource เลย destructuring
+// HOOKS stuff
+const useResources = resource => {
+  // * 2) รับ resource จาก Component เพราะ Hooks คือการ shared function ไปหาแต่ละ component ได้
 
-  // init state
+  // กรณี init state
   const [resources, setResources] = useState([]);
 
-  // ใช้ใน useEffect
-  const fetchResources = async resource => {
-    const response = await axios.get(
-      `https://jsonplaceholder.typicode.com/${resource}`
-    );
-
-    // setState เมื่อมีการเปลี่ยนแปลง state (จากเดิม [] เป็นข้อมูลจากการ fetch)
-    setResources(response.data);
-  };
-
-  // when update or rerender อย่าลืม argument ที่ 2 เอาไว้เช็คว่า function ใน useEffect จะทำงานหรือไม่
+  // * 3) when update or rerender อย่าลืม argument ที่ 2 เอาไว้เช็คว่า function ใน useEffect จะทำงานหรือไม่
   useEffect(() => {
-    fetchResources(resource);
+    // ใช้ IFEs ในการ fetch DATA โดยรับ resource มาจากวงเล็บที่สอง
+    (async resource => {
+      const response = await axios.get(
+        `https://jsonplaceholder.typicode.com/${resource}`
+      );
+      // setState เมื่อมีการเปลี่ยนแปลง state (จากเดิม [] เป็นข้อมูลจากการ fetch)
+      setResources(response.data);
+    })(resource);
+    // [resource] เป็นตัวเช็คใน useEffect ว่ามีค่าเปลี่ยนมั้ย
   }, [resource]);
 
-  // ใน arrow function จะต้องเป็น pure function ไม่ให้ใช้ Promises
-  // * arg ที่สองเป็น array เช็คว่า value ใน resource เปลี่ยนไปหรือไม่ ถ้าเปลี่ยนแปลง จะ run arrow function ... ถ้าไม่กำหนด arg จะทำให้ run arrow function ตลอดเวลา
-  // กรณีที่ array arg ที่สองเป็น obj จะถูก call arrow function ตลอด เพราะว่า obj ไม่ใช่ primitive data type
+  // ส่ง current state จาก array destructuring (เป็น array) ไปใช้ข้างนอก function useResources()
+  return resources;
+};
+
+const ResourceList = ({ resource }) => {
+  // * 1) เรียกใช้ Hooks โดยเอาข้อมูลจาก Parent component ..
+  const resources = useResources(resource);
 
   return (
     <div className="col">
@@ -54,4 +57,8 @@ export default ResourceList;
  *  - useEffect จะเป็นตัวแทน Life Cycle (componentDidMount และ componentDidUpdate)
  *  - useEffect(function, []) เมื่อไหร่ first render หรือมีการ update , useEffect จะ run fucntion
  * ! - อย่าลืม second element เพราะจะเป็นตัวเช็คการเปลี่ยนแปลง state
+ *
+ * จริงๆ แล้วมีแค่ input props > Hooks Logic > Output array
+ *  - เราก็เลยเอา Hooks Logic ไป reuse ได้
+ *  - อย่าลืมต้อง return ค่า state ปัจจุบันออกมาด้วย
  */
