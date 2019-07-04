@@ -7,25 +7,36 @@ const ResourceList = ({ resource }) => {
   // init state
   const [resources, setResources] = useState([]);
 
+  // ใช้ใน useEffect
+  const fetchResources = async resource => {
+    const response = await axios.get(
+      `https://jsonplaceholder.typicode.com/${resource}`
+    );
+
+    // setState เมื่อมีการเปลี่ยนแปลง state (จากเดิม [] เป็นข้อมูลจากการ fetch)
+    setResources(response.data);
+  };
+
   // when update or rerender อย่าลืม argument ที่ 2 เอาไว้เช็คว่า function ใน useEffect จะทำงานหรือไม่
   useEffect(() => {
-    // ใช้ IFEs syntax คือต้องทำงานใน function ให้เสร็จ (async await) แล้ว runfunction ด้วยวงเล็บที่ 2 เช่น
-    // กำหนด function .. const hi = () => {} แล้วเรียกใช้ function hi โดย hi()
-    (async resource => {
-      const response = await axios.get(
-        `https://jsonplaceholder.typicode.com/${resource}`
-      );
-
-      // setState เมื่อมีการเปลี่ยนแปลง state (จากเดิม [] เป็นข้อมูลจากการ fetch)
-      setResources(response.data);
-    })(resource);
+    fetchResources(resource);
   }, [resource]);
 
   // ใน arrow function จะต้องเป็น pure function ไม่ให้ใช้ Promises
   // * arg ที่สองเป็น array เช็คว่า value ใน resource เปลี่ยนไปหรือไม่ ถ้าเปลี่ยนแปลง จะ run arrow function ... ถ้าไม่กำหนด arg จะทำให้ run arrow function ตลอดเวลา
   // กรณีที่ array arg ที่สองเป็น obj จะถูก call arrow function ตลอด เพราะว่า obj ไม่ใช่ primitive data type
 
-  return <div>{resources.length}</div>;
+  return (
+    <div className="col">
+      <ul className="list-group">
+        {resources.map(record => (
+          <li key={record.id} className="list-group-item">
+            {record.title}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 };
 
 export default ResourceList;
