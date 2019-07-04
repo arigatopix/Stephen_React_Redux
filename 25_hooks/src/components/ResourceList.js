@@ -1,41 +1,32 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-class ResourceList extends React.Component {
+const ResourceList = ({ resource }) => {
+  // ปกติจะเป็น props.resource เลย destructuring
+
   // init state
-  state = { resources: [] };
+  const [resources, setResources] = useState([]);
 
-  async componentDidMount() {
-    // * อย่าลืม จะ run componentDidMout แค่ครั้งเดียว
-    // * อย่าลืม ถ้าใช้ await จะต้องมี async หน้า function
-
-    const response = await axios.get(
-      `https://jsonplaceholder.typicode.com/${this.props.resource}`
-    );
-
-    // update state หลัง fetch เสร็จ
-    this.setState({ resources: response.data });
-  }
-
-  // update resource
-  async componentDidUpdate(PrevProps) {
-    if (PrevProps.resource !== this.props.resource) {
-      // เช็ค Props อันที่แล้ว ถ้าไม่มีการเปลี่ยนแปลง จะไม่ทำตามเงื่อนไข
-      console.log(PrevProps);
-
+  // when update or rerender อย่าลืม argument ที่ 2 เอาไว้เช็คว่า function ใน useEffect จะทำงานหรือไม่
+  useEffect(() => {
+    // ใช้ IFEs syntax คือต้องทำงานใน function ให้เสร็จ (async await) แล้ว runfunction ด้วยวงเล็บที่ 2 เช่น
+    // กำหนด function .. const hi = () => {} แล้วเรียกใช้ function hi โดย hi()
+    (async resource => {
       const response = await axios.get(
-        `https://jsonplaceholder.typicode.com/${this.props.resource}`
+        `https://jsonplaceholder.typicode.com/${resource}`
       );
 
-      // update state หลัง fetch เสร็จ
-      this.setState({ resources: response.data });
-    }
-  }
+      // setState เมื่อมีการเปลี่ยนแปลง state (จากเดิม [] เป็นข้อมูลจากการ fetch)
+      setResources(response.data);
+    })(resource);
+  }, [resource]);
 
-  render() {
-    return <div>{this.state.resources.length}</div>;
-  }
-}
+  // ใน arrow function จะต้องเป็น pure function ไม่ให้ใช้ Promises
+  // * arg ที่สองเป็น array เช็คว่า value ใน resource เปลี่ยนไปหรือไม่ ถ้าเปลี่ยนแปลง จะ run arrow function ... ถ้าไม่กำหนด arg จะทำให้ run arrow function ตลอดเวลา
+  // กรณีที่ array arg ที่สองเป็น obj จะถูก call arrow function ตลอด เพราะว่า obj ไม่ใช่ primitive data type
+
+  return <div>{resources.length}</div>;
+};
 
 export default ResourceList;
 
@@ -47,4 +38,9 @@ export default ResourceList;
  *    - เมื่อ update component จะ rerender แล้วถูก update แล้วก็ rerender เหมือนเดิม เป็น loop ไม่มีที่สิ้นสุด
  *    - ต้องใช้ Logic แก้โดย componentDidUpdate(PrevProps)
  *      - PrevProps จะดู props ปัจจุบัน กับ props อันที่แล้ว .. ถ้าเหมือนเดิมจะไม่ rerender
+ *
+ * ใช้ function base
+ *  - useEffect จะเป็นตัวแทน Life Cycle (componentDidMount และ componentDidUpdate)
+ *  - useEffect(function, []) เมื่อไหร่ first render หรือมีการ update , useEffect จะ run fucntion
+ * ! - อย่าลืม second element เพราะจะเป็นตัวเช็คการเปลี่ยนแปลง state
  */
