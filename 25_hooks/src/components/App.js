@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import ResourceList from "./ResourceList";
+import UserList from "./UserList";
+
 const App = () => {
   const [resource, setResource] = useState("posts");
   // Array destructuring ... ใช้ชื่อ variable อะไรก็ได้
@@ -9,6 +11,9 @@ const App = () => {
 
   return (
     <div className="container">
+      <div className="row">
+        <UserList />
+      </div>
       <div className="row">
         <button
           className="btn btn-dark col"
