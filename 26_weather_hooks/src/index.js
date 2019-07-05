@@ -1,46 +1,39 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import SeasonDisplay from './SeasonDisplay';
-import Spinner from './Spinner';
+import React, { useState, useEffect } from "react";
+import ReactDOM from "react-dom";
+import SeasonDisplay from "./SeasonDisplay";
+import Spinner from "./Spinner";
 
-class App extends React.Component {
-   state = { lat : null, errorMessage : '' };
+const App = () => {
+  // init state Latitude
+  const [lat, setLat] = useState(null);
 
-  // Lifecycle component จะแสดงค่าเริ่มต้นตั้งแต่ page load และ update (rerender) หลังจาก setState ห้ามแก้ state object โดยตรง
-  componentDidMount() {
+  // init state errorMessage
+  const [errorMessage, setErrorMessage] = useState("");
+
+  // componentDidMount and componentDidUpdate ใช้ useEffect แทน .. จะมี second arg หรือไม่ก็ได้
+  // ทำ setState เป็น function base
+  useEffect(() => {
     window.navigator.geolocation.getCurrentPosition(
-      // ! ระวังตอน setState เป็น method() ที่บรรจุ object
-      position => this.setState({ lat : position.coords.latitude }), // ไม่ overwrite ไม่เปลี่ยน errMessage 
-      err => this.setState({ errorMessage : err.message })
+      position => setLat(position.coords.latitude),
+      err => setErrorMessage(err.message)
     );
+  }, []);
+
+  // renderBody ทำ logic ก่อน แล้วไป render
+  // ถ้าเป็น function base ใช้ variable ธรรมดาดีกว่าประกาศ function ใน function
+  let content;
+  if (errorMessage) {
+    // errorMessage
+    content = <div>Error : {errorMessage}</div>;
+  } else if (lat) {
+    // ได้รับ latitude
+    content = <SeasonDisplay lat={lat} />;
+  } else {
+    // รอจากหน้าจอ
+    content = <Spinner message={"Please accept location request..."} />;
   }
 
-  renderBody() {
-    // Show err,
-    if (this.state.errorMessage && !this.state.lat) {
-      return <div>Error : {this.state.errorMessage}</div>
-  
-      // NO error and show Latitude
-    } else if (!this.state.errorMessage && this.state.lat) {
-      // !  ระวังตอนเรียกใช้ state เผลอๆ
-      return <SeasonDisplay lat={this.state.lat}/>
-    }
-  
-    // Waiting User all location
-    return <Spinner message={'Please accept location request...'}/>
-  }
-  render() {
-    // ! อย่าลืม return ใน render
-    return (
-      <div className="example">
-        {this.renderBody()}
-      </div>
-    )
-  }
-}
+  return <div className="border red">{content}</div>;
+};
 
-ReactDOM.render(<App />, document.querySelector('#root'));
-
-// Aviod if statement in render
-// ใช้ helper function (renderBody()) เพื่อบรรจุ function หรือ if statement เพื่อแสดงผล (render) เพื่อลดการใช้ <div></div> เดิมๆ เพื่อบรรจุ return JSX หลายๆครั้ง
-// อย่าลืม render ต้องมี return JSX ใน div
+ReactDOM.render(<App />, document.querySelector("#root"));
