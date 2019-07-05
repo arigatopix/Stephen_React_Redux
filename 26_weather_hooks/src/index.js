@@ -1,23 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
+import useLocation from "./useLocaion";
 import SeasonDisplay from "./SeasonDisplay";
 import Spinner from "./Spinner";
 
 const App = () => {
-  // init state Latitude
-  const [lat, setLat] = useState(null);
-
-  // init state errorMessage
-  const [errorMessage, setErrorMessage] = useState("");
-
-  // componentDidMount and componentDidUpdate ใช้ useEffect แทน .. จะมี second arg หรือไม่ก็ได้
-  // ทำ setState เป็น function base
-  useEffect(() => {
-    window.navigator.geolocation.getCurrentPosition(
-      position => setLat(position.coords.latitude),
-      err => setErrorMessage(err.message)
-    );
-  }, []);
+  // import HOOKS from useLocation
+  const [lat, errorMessage] = useLocation();
 
   // renderBody ทำ logic ก่อน แล้วไป render
   // ถ้าเป็น function base ใช้ variable ธรรมดาดีกว่าประกาศ function ใน function
